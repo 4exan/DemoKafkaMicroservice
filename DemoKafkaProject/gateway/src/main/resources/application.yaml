@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: auth-service
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/**
+
+        - id: post-producer
+          uri: lb://POST-PRODUCER
+          predicates:
+            - Path=/post/**
+
+  main:
+    web-application-type: reactive
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      database: 0
+      username: default
+      password: 4kTtH2ddXfN2sFmXE6sowOLukxiaJhN8n
+server:
+  port: 8765
+eureka:
+  instance:
+    hostname: localhost
