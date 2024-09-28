@@ -17,13 +17,24 @@ export default class AuthService {
 
   static async login(username, password) {
     try {
-      const response = await axios.post(`${this.BASE_URL}/auth/login`, {
+      const response = await axios.post(`${AuthService.BASE_URL}/auth/login`, {
         username,
         password,
       });
       return response.data;
     } catch (err) {
       throw err;
+    }
+  }
+
+  static async getMyProfile(token) {
+    try {
+      const response = await axios.get(`${AuthService.BASE_URL}/auth/profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
     }
   }
 

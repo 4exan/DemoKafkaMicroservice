@@ -16,11 +16,11 @@ export default function Navbar() {
   return (
     <nav className="navbar tred border-b-2 py-2">
       <ul>
-        {!isAuthenticated && (
+        {
           <li className="inline mx-2 font-montserrat text-xl">
             <Link to="/">Home</Link>
           </li>
-        )}
+        }
         {!isAuthenticated && (
           <li className="inline mx-2 font-montserrat text-xl">
             <Link to="/login">Login</Link>
@@ -37,8 +37,8 @@ export default function Navbar() {
           </li>
         )}
         {isAuthenticated && (
-          <li className="inline mx-2 font-montserrat text-xl">
-            <Link to="/user/dashboard">Dashboard</Link>
+          <li className="inline mx-2 font-montserrat text-xl line-through text-gray-400">
+            <Link to="/user/dashboard">Posts</Link>
           </li>
         )}
         {isAdmin && (

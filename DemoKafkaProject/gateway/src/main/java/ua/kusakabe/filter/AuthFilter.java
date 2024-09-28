@@ -12,16 +12,12 @@ import ua.kusakabe.service.TokenCacheService;
 @Component
 public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> {
 
-    private RouteValidator routeValidator;
-    private RestTemplate restTemplate;
-    private TokenCacheService tokenCacheService;
-
     @Autowired
-    public AuthFilter(RouteValidator routeValidator, RestTemplate restTemplate, TokenCacheService tokenCacheService) {
-        this.routeValidator = routeValidator;
-        this.restTemplate = restTemplate;
-        this.tokenCacheService = tokenCacheService;
-    }
+    private RouteValidator routeValidator;
+    @Autowired
+    private RestTemplate restTemplate;
+    @Autowired
+    private TokenCacheService tokenCacheService;
 
     public AuthFilter(){
         super(Config.class);
@@ -62,7 +58,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
                     }
                 }
             }
-            return chain.filter(exchange);
+            return null;
         }));
     }
 

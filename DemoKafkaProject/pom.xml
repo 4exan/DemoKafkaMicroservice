@@ -26,6 +26,7 @@
         <module>auth-service</module>
         <module>post-producer</module>
         <module>post-consumer</module>
+        <module>user-service</module>
     </modules>
     <scm>
         <connection/>
