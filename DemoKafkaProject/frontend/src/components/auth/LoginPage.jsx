@@ -35,11 +35,21 @@ export default function LoginPage() {
         <h2 className="text-xl font-semibold text-center py-4">Login</h2>
         <div className="p-2">
           <label>Login:</label>
-          <input type="text" className="border-2 rounded-sm mx-2"></input>
+          <input
+            type="text"
+            className="border-2 rounded-sm mx-2"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          ></input>
         </div>
         <div className="p-2">
           <label>Password:</label>
-          <input type="password" className="border-2 rounded-sm mx-2"></input>
+          <input
+            type="password"
+            className="border-2 rounded-sm mx-2"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          ></input>
         </div>
         <input
           type="submit"

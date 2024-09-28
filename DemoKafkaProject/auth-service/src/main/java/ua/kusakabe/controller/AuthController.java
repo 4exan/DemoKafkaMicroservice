@@ -5,11 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 import ua.kusakabe.dto.AuthRR;
+import ua.kusakabe.dto.ProfileDto;
 import ua.kusakabe.service.UserService;
 
 @RestController
@@ -44,6 +43,14 @@ public class AuthController {
     @PostMapping("/validate")
     public String validateToken(@RequestBody AuthRR req){
         return userService.validateToken(req);
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<ProfileDto> getProfile(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        ProfileDto profile = userService.getMyProfile(username);
+        return ResponseEntity.ok(profile);
     }
 
 }

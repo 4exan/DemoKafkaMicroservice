@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.kusakabe.dto.AuthRR;
+import ua.kusakabe.dto.ProfileDto;
 import ua.kusakabe.entity.User;
 import ua.kusakabe.repository.UserRepository;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -85,6 +87,25 @@ public class UserService {
             response = "500";
         }
         return response;
+    }
+
+    public ProfileDto getMyProfile(String username){
+        ProfileDto res = new ProfileDto();
+        try{
+            Optional<User> user = userRepository.findByUsername(username);
+            if(user.isPresent()){
+                res.setUsername(user.get().getUsername());
+                res.setFirstName(user.get().getFirstName());
+                res.setLastName(user.get().getLastName());
+                res.setEmail(user.get().getEmail());
+                res.setPhone(user.get().getPhone());
+            } else {
+                throw new RuntimeException("No such user");
+            }
+        }catch (Exception e){
+            throw new RuntimeException("Error while getting user profile");
+        }
+        return res;
     }
 
 }

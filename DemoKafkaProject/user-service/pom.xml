@@ -6,8 +6,8 @@
         <artifactId>DemoKafkaProject</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>gateway</artifactId>
-    <name>gateway</name>
+    <artifactId>user-service</artifactId>
+    <name>user-service</name>
     <url>http://maven.apache.org</url>
     <properties>
         <spring-cloud.version>2023.0.3</spring-cloud.version>
@@ -26,30 +26,21 @@
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway</artifactId>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>annotationProcessor</scope>
         </dependency>
     </dependencies>
 </project>
