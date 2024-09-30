@@ -8,7 +8,7 @@ import ua.kusakabe.kafka.JsonKafkaProducer;
 import ua.kusakabe.payload.Post;
 
 @RestController
-@RequestMapping("/post")
+@RequestMapping("/post-create")
 public class MessageController {
 
     private JsonKafkaProducer jsonKafkaProducer;
@@ -24,7 +24,7 @@ public class MessageController {
         return "Test request to POST-PRODUCER service!";
     }
 
-    @PostMapping("/publish")
+    @PostMapping("/new")
     public ResponseEntity<String> publish(@RequestBody PostRR data, @RequestHeader("Authorization") String token){
         jsonKafkaProducer.sendMessage(data, token);
         return ResponseEntity.ok("Message published");

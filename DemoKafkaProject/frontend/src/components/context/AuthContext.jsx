@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import AuthService from "../service/AuthService";
 
 const AuthContext = createContext();
@@ -6,6 +6,12 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthencticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("token") != "") {
+      login();
+    }
+  }, []);
 
   const login = () => {
     setIsAuthencticated(true);

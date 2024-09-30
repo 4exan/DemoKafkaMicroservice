@@ -80,6 +80,20 @@ spring:
             - Path=/user/**
           filters:
             - AuthFilter
+
+        - id: post-service
+          uri: lb://POST-SERVICE
+          predicates:
+            - Path=/post/**
+          filters:
+            - AuthFilter
+
+        - id: post-producer
+          uri: lb://POST-PRODUCER
+          predicates:
+            - Path=/post-create/**
+          filters:
+            - AuthFilter
       globalcors:
         cors-configurations:
                   '[/**]':
