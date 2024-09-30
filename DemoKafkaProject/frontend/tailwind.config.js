@@ -6,7 +6,17 @@ export default {
       "sans-custom": ["Noto Sans", "sans-serif"],
       montserrat: ["Montserrat", "sans-serif"],
     },
-    extend: {},
+    extend: {
+      animation: {
+        "fade-in": "fadeIn 5s ease-in-out",
+      },
+      keyframes: (theme) => ({
+        fadeIn: {
+          "0%": { backgroundColor: theme("colors.red.300") },
+          "100%": { backgroundColor: theme("colors.transparent") },
+        },
+      }),
+    },
   },
   plugins: [],
 };

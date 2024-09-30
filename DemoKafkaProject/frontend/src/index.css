@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  font-family: "Montserrat", "sans-serif";
+}
+
+body {
+  overflow-y: hidden;
+}
+
 .form {
   border: 1px solid grey;
   border-radius: 5px;
@@ -10,4 +18,90 @@
   left: 50%;
   top: 40%;
   transform: translate(-50%, -50%);
+}
+
+/* MODAL */
+
+.modal-bg {
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 800px;
+  height: 360px;
+
+  background-color: rgb(253, 253, 253);
+  padding: 10px;
+
+  border-radius: 25px;
+
+  -webkit-box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.75);
+}
+
+.modal h1 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.modal button {
+  position: inherit;
+  left: 95%;
+  top: 2%;
+
+  border: 1px solid black;
+  border-radius: 25px;
+
+  padding: 5px 10px;
+}
+
+/* PROFILE TABLE */
+
+.table-container {
+  margin: auto;
+
+  width: 800px;
+  height: 600px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  overflow-wrap: break-word;
+  scroll-behavior: smooth;
+}
+
+.table-container::-webkit-scrollbar {
+  width: 4px; /* Width of the scrollbar */
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Track color */
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: #5a5a5a; /* Thumb color */
+  border-radius: 10px; /* Round edges */
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Thumb color on hover */
+  transition: all 1s;
+}
+
+.table-container table {
+  margin: auto;
+  width: 700px;
+}
+
+.width800 {
+  width: 700px;
 }
