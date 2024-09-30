@@ -6,6 +6,10 @@
   font-family: "Montserrat", "sans-serif";
 }
 
+body {
+  overflow-y: hidden;
+}
+
 .form {
   border: 1px solid grey;
   border-radius: 5px;
@@ -33,10 +37,10 @@
   top: 50%;
   transform: translate(-50%, -50%);
 
-  width: 50%;
-  height: 40%;
+  width: 800px;
+  height: 360px;
 
-  background-color: aliceblue;
+  background-color: rgb(253, 253, 253);
   padding: 10px;
 
   border-radius: 25px;
@@ -65,13 +69,39 @@
 /* PROFILE TABLE */
 
 .table-container {
+  margin: auto;
+
+  width: 800px;
   height: 600px;
   overflow-y: scroll;
+  overflow-x: hidden;
+  overflow-wrap: break-word;
+  scroll-behavior: smooth;
+}
+
+.table-container::-webkit-scrollbar {
+  width: 4px; /* Width of the scrollbar */
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Track color */
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: #5a5a5a; /* Thumb color */
+  border-radius: 10px; /* Round edges */
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Thumb color on hover */
+  transition: all 1s;
 }
 
 .table-container table {
   margin: auto;
+  width: 700px;
 }
 
-.table-container tbody {
+.width800 {
+  width: 700px;
 }

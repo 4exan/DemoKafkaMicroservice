@@ -27,27 +27,27 @@ export default function Navbar() {
     <nav className="navbar tred border-b-2 py-2">
       <ul>
         {
-          <li className="inline mx-2 font-montserrat text-xl">
+          <li className="inline font-montserrat text-xl transition-all hover:bg-black hover:text-white p-2">
             <Link to="/">Home</Link>
           </li>
         }
         {!isAuthenticated && (
-          <li className="inline mx-2 font-montserrat text-xl">
+          <li className="inline font-montserrat text-xl transition-all hover:bg-black hover:text-white p-2">
             <Link to="/login">Login</Link>
           </li>
         )}
         {!isAuthenticated && (
-          <li className="inline mx-2 font-montserrat text-xl">
+          <li className="inline font-montserrat text-xl transition-all hover:bg-black hover:text-white p-2">
             <Link to="/registration">Registration</Link>
           </li>
         )}
         {isAuthenticated && (
-          <li className="inline mx-2 font-montserrat text-xl">
+          <li className="inline font-montserrat text-xl transition-all hover:bg-black hover:text-white p-2">
             <Link to="/user/profile">Profile</Link>
           </li>
         )}
         {isAuthenticated && (
-          <li className="inline mx-2 font-montserrat text-xl line-through text-gray-400">
+          <li className="inline font-montserrat text-xl transition-all hover:bg-black hover:text-white p-2">
             <Link to="/user/dashboard">Posts</Link>
           </li>
         )}
@@ -62,12 +62,12 @@ export default function Navbar() {
           </li>
         )} */}
         {isAuthenticated && (
-          <li className="inline mx-2 font-montserrat text-xl">
+          <li className="inline font-montserrat text-xl transition-all hover:bg-black hover:text-white p-2">
             <Link to="/user/search">Users</Link>
           </li>
         )}
         {isAuthenticated && (
-          <li className="inline absolute top-o right-4 font-montserrat text-xl">
+          <li className="inline absolute top-0 right-0 font-montserrat text-xl transition-all hover:bg-black hover:text-white p-2">
             <Link to="/" onClick={handleLogout}>
               Logout
             </Link>

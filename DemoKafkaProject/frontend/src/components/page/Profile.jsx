@@ -10,6 +10,7 @@ export default function Profile() {
   const [posts, setPosts] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [doFetchPost, setDoFetchPost] = useState(false);
+  const [filteredPosts, setFilteredPosts] = useState([]);
 
   useEffect(() => {
     fetchUserProfile();
@@ -42,7 +43,9 @@ export default function Profile() {
       const token = localStorage.getItem("token");
       const response = await PostService.getUserPosts(token);
       console.log(response.postList); //REMOVE
-      setPosts(response.postList);
+      setPosts(response.postList.sort((a, b) => b.id - a.id));
+      setFilteredPosts(posts);
+      console.log(`Filtered posts: ${filteredPosts}`);
     } catch (error) {
       throw error;
     }
@@ -99,7 +102,7 @@ export default function Profile() {
         <h1 className="text-center font-bold text-2xl my-4">Posts!</h1>
         <div className="my-4 text-center">
           <button
-            className="text-3xl font-semibold"
+            className="text-3xl font-semibold transition-all hover:bg-black hover:text-white border-2 border-black px-3 rounded-full"
             onClick={() => openModal()}
           >
             +
@@ -110,8 +113,8 @@ export default function Profile() {
             <thead className=""></thead>
             <tbody>
               {posts.map((post) => (
-                <tr>
-                  <td>
+                <tr className="">
+                  <td className="break-normal">
                     <Post post={post} key={post.id} />
                   </td>
                   <td className="px-4">
