@@ -1,34 +1,23 @@
-import { useState } from "react";
-import { useEffect } from "react";
-import AuthService from "../service/AuthService";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router";
+import UserService from "../service/UserService";
 import PostService from "../service/PostService";
 import Post from "../common/Post";
-import PostModal from "../common/PostModal";
 
-export default function Profile() {
+export default function UserPage() {
+  const { state } = useLocation();
   const [profile, setProfile] = useState({});
   const [posts, setPosts] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
-  const [doFetchPost, setDoFetchPost] = useState(false);
-  const [filteredPosts, setFilteredPosts] = useState([]);
 
   useEffect(() => {
     fetchUserProfile();
     fetchUserPosts();
-  }, []);
-
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  function closeModal() {
-    setIsOpen(false);
-  }
+  }, [state.username]);
 
   const fetchUserProfile = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await AuthService.getMyProfile(token);
+      const response = await UserService.getUserProfile(token, state.username);
       setProfile(response);
     } catch (error) {
       throw error;
@@ -38,25 +27,11 @@ export default function Profile() {
   const fetchUserPosts = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await PostService.getUserPosts(token);
-      console.log(response.postList); //REMOVE
-      setPosts(response.postList.sort((a, b) => b.id - a.id));
-      setFilteredPosts(posts);
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  const handleRemovePost = async (id) => {
-    try {
-      const confirmDelete = window.confirm(
-        "Are you sure you want to delete this post?"
+      const response = await PostService.getOtherUserPosts(
+        token,
+        state.username
       );
-      const token = localStorage.getItem("token");
-      if (confirmDelete) {
-        await PostService.deletePosts(token, id);
-      }
-      fetchUserPosts();
+      setPosts(response.postList.sort((a, b) => b.id - a.id));
     } catch (error) {
       throw error;
     }
@@ -64,6 +39,9 @@ export default function Profile() {
 
   return (
     <div className="px-10 py-5" id="profile">
+      {/* <button className="absolute text-red-600 border-2 border-black rounded-lg px-2 transition-all hover:bg-red-600 hover:text-white hover:border-transparent">
+        Back
+      </button> */}
       <h1 className="font-semibold text-2xl text-center font-montserrat">
         Profile page!
       </h1>
@@ -95,14 +73,6 @@ export default function Profile() {
       </div>
       <div>
         <h1 className="text-center font-bold text-2xl my-4">Posts!</h1>
-        <div className="my-4 text-center">
-          <button
-            className="text-3xl font-semibold transition-all hover:bg-black hover:text-white border-2 border-black px-3 rounded-full"
-            onClick={() => openModal()}
-          >
-            +
-          </button>
-        </div>
         <div className="table-container">
           <table className="">
             <thead className=""></thead>
@@ -112,27 +82,11 @@ export default function Profile() {
                   <td className="break-normal">
                     <Post post={post} key={post.id} />
                   </td>
-                  <td className="px-4">
-                    <button
-                      onClick={() => handleRemovePost(post.id)}
-                      className=""
-                    >
-                      Remove
-                    </button>
-                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-      </div>
-      <div hidden={!isOpen}>
-        <PostModal
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          fetchUserPosts={fetchUserPosts}
-          setDoFetchPost={setDoFetchPost}
-        />
       </div>
     </div>
   );

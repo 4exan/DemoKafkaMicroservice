@@ -34,19 +34,21 @@ export default function LoginPage() {
       <form className="form p-4 text-center" onSubmit={handleSubmit}>
         <h2 className="text-xl font-semibold text-center py-4">Login</h2>
         <div className="p-2">
-          <label>Login:</label>
+          <label className="">Login:</label>
+          <br />
           <input
             type="text"
-            className="border-2 rounded-sm mx-2"
+            className="border-2 rounded-lg m-2 text-center border-gray-300 transition-all hover:border-black"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           ></input>
         </div>
         <div className="p-2">
           <label>Password:</label>
+          <br />
           <input
             type="password"
-            className="border-2 rounded-sm mx-2"
+            className="border-2 rounded-lg m-2 text-center border-gray-300 transition-all hover:border-black"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></input>
@@ -54,7 +56,7 @@ export default function LoginPage() {
         <input
           type="submit"
           value="Login"
-          className="cursor-pointer p-2"
+          className="cursor-pointer px-2 border-2 border-black rounded-lg transition-all hover:bg-black hover:text-white hover:border-transparent"
         ></input>
       </form>
     </div>

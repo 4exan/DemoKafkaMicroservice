@@ -43,7 +43,7 @@ export default function Navbar() {
         )}
         {isAuthenticated && (
           <li className="inline font-montserrat text-xl transition-all hover:bg-black hover:text-white p-2">
-            <Link to="/user/profile">Profile</Link>
+            <Link to="/user/profile">My Profile</Link>
           </li>
         )}
         {isAuthenticated && (
@@ -64,6 +64,26 @@ export default function Navbar() {
         {isAuthenticated && (
           <li className="inline font-montserrat text-xl transition-all hover:bg-black hover:text-white p-2">
             <Link to="/user/search">Users</Link>
+          </li>
+        )}
+        {isAuthenticated && (
+          <li className="inline font-montserrat text-xl px-4">|</li>
+        )}
+        {isAuthenticated && (
+          <li className="inline font-montserrat text-xl">
+            <input
+              type="text"
+              className=" text-center px-2 border-2 border-gray-200 rounded-lg transition-all hover:border-black hover:text-black hover:bg-white"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <Link
+              className=" mx-2 px-2 border-x-2 border-transparent transition-all hover:border-x-2 hover:border-white hover:rounded-lg hover:bg-black hover:text-white"
+              to={`/user/search/${search}`}
+              state={{ username: `${search}` }}
+            >
+              Search
+            </Link>
           </li>
         )}
         {isAuthenticated && (

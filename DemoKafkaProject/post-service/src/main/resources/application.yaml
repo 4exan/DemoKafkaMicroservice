@@ -1,0 +1,17 @@
+server:
+  port: 8082
+eureka:
+  instance:
+    hostname: localhost
+spring:
+  application:
+    name: post-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/kafkademo
+    username: postgres
+    password: root
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
