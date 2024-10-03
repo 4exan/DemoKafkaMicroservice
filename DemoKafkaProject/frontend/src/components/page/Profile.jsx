@@ -103,6 +103,28 @@ export default function Profile() {
     }
   };
 
+  const handleLikeButton = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = PostService.likePost(token, id);
+      console.log(token);
+      console.log(`Liked post with id: ${id}`);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const handleDislikeButton = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = PostService.dislikePost(token, id);
+      console.log(token);
+      console.log(`Disiked post with id: ${id}`);
+    } catch (error) {
+      throw error;
+    }
+  };
+
   function filterPost() {
     if (isFiltered) {
       const filteredPosts = fullInfo.sort((a, b) => a.id - b.id);
@@ -117,84 +139,98 @@ export default function Profile() {
 
   if (!loading) {
     return (
-      <div className="px-10 py-5" id="profile">
-        <h1 className="font-semibold text-2xl text-center font-montserrat">
-          Profile page!
-        </h1>
-        <div>
-          <p className="font-semibold text-xl font-montserrat">
-            Username:{" "}
-            <span className="font-normal text-xl mx-2 font-montserrat">
-              {profile.username}
-            </span>
-          </p>
-          <p className="font-semibold text-xl font-montserrat">
-            Full name:
-            <span className="font-normal text-xl mx-2 font-montserrat">
-              {profile.firstName} {profile.lastName}
-            </span>
-          </p>
-          <p className="font-semibold text-xl font-montserrat">
-            Email:
-            <span className="font-normal text-xl mx-2 font-montserrat">
-              {profile.email}
-            </span>
-          </p>
-          <p className="font-semibold text-xl font-montserrat">
-            Phone:
-            <span className="font-normal text-xl mx-2 font-montserrat">
-              {profile.phone}
-            </span>
-          </p>
-        </div>
-        <div>
-          <h1 className="text-center font-bold text-2xl my-4">Posts!</h1>
-          <div className="my-4 w-1/2 m-auto h-1/2 border-b-2 border-x-2 py-2 rounded-lg border-gray-400">
-            <button
-              className="mx-2 text-3xl font-semibold transition-all hover:bg-black hover:text-white border-2 border-black px-3 rounded-full"
-              onClick={() => openModal()}
-            >
-              +
-            </button>
-            <button
-              className="mx-2 text-m font-semibold transition-all hover:bg-black hover:text-white border-2 border-black px-3 rounded-full align-text-bottom"
-              onClick={filterPost}
-            >
-              Filter
-            </button>
+      <>
+        <div className="flex h-screen">
+          {/* LEFT PANEL - PROFILE*/}
+          <div className="w-1/3 flex flex-col items-start justify-start  p-4">
+            <img
+              src="https://via.placeholder.com/150"
+              className="w-full h-auto max-w-xs mb-4 rounded-full"
+              alt="sample"
+            />
+            <div className="border-b-2 border-gray-400 w-1/2">
+              <p className="font-semibold text-3xl py-2">
+                {profile.firstName} {profile.lastName}
+              </p>
+            </div>
+            <div className="">
+              <p className="font-semibold text-xl font-montserrat pt-2">
+                Username:{" "}
+                <span className="font-normal text-xl mx-2 font-montserrat">
+                  {profile.username}
+                </span>
+              </p>
+              <p className="font-semibold text-xl font-montserrat">
+                Email:
+                <span className="font-normal text-xl mx-2 font-montserrat">
+                  {profile.email}
+                </span>
+              </p>
+              <p className="font-semibold text-xl font-montserrat">
+                Phone:
+                <span className="font-normal text-xl mx-2 font-montserrat">
+                  {profile.phone}
+                </span>
+              </p>
+            </div>
           </div>
-          <div className="table-container">
-            <table className="">
-              <thead className=""></thead>
-              <tbody>
-                {fullInfo.map((post) => (
-                  <tr className="">
-                    <td className="break-normal py-2">
-                      <Post post={post} key={post.id} />
-                    </td>
-                    <td className="px-4">
-                      <button
-                        onClick={() => handleRemovePost(post.id)}
-                        className=""
-                      >
-                        Remove
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          {/* CENTRAL PANEL - POSTS*/}
+          <div className="w-2/5 flex items-start justify-center border-x-2 border-gray-300 shadow-black shadow-2xl bg-gray-300">
+            <div>
+              <div className="my-4 m-auto h-1/2 border-b border-x py-2 rounded-lg border-gray-400 shadow-lg bg-white">
+                <button
+                  className="mx-2 text-3xl font-semibold transition-all hover:bg-black hover:text-white border-2 border-black px-3 rounded-full"
+                  onClick={() => openModal()}
+                >
+                  +
+                </button>
+                <button
+                  className="mx-2 text-m font-semibold transition-all hover:bg-black hover:text-white border-2 border-black px-3 rounded-full align-text-bottom"
+                  onClick={filterPost}
+                >
+                  Filter
+                </button>
+              </div>
+              {/* table-container */}
+              <div className="flex-grow overflow-y-scroll max-h-[calc(100vh-200px)] max-w-[calc(100vh-350px)] table-scroll">
+                <table className="">
+                  <thead>
+                    <th>~ Top ~</th>
+                  </thead>
+                  <tbody>
+                    {fullInfo.map((post, key) => (
+                      <tr className="" key={key}>
+                        <td className="break-normal py-2">
+                          <Post
+                            post={post}
+                            key={post.id}
+                            removePost={handleRemovePost}
+                            likePost={handleLikeButton}
+                            dislikePost={handleDislikeButton}
+                            user={profile.username}
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          {/* RIGHT PANEL - OTHER*/}
+          <div className="w-1/3 flex items-center justify-center">
+            <div hidden={!isOpen}>
+              <PostModal
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                fetchUserPosts={fetchUserPosts}
+                setDoFetchPost={setDoFetchPost}
+              />
+            </div>
           </div>
         </div>
-        <div hidden={!isOpen}>
-          <PostModal
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            fetchUserPosts={fetchUserPosts}
-            setDoFetchPost={setDoFetchPost}
-          />
-        </div>
-      </div>
+        {/* ----------------- */}
+      </>
     );
   } else {
     return (

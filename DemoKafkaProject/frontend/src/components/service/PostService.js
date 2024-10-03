@@ -54,6 +54,31 @@ export default class PostService {
     }
   }
 
+  static async likePost(token, postId) {
+    try {
+      const response = await axios.get(`${this.BASE_URL}/post/like/${postId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async dislikePost(token, postId) {
+    try {
+      const response = await axios.get(
+        `${this.BASE_URL}/post/dislike/${postId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return response.data;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   static async deletePosts(token, id) {
     try {
       const response = await axios.delete(`${this.BASE_URL}/post/${id}`, {

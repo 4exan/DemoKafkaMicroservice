@@ -27,6 +27,7 @@ export default function App() {
                 {/* Routes for authenticated users*/}
                 <Route path="/user/profile" element={<Profile />} />
                 <Route path="/user/search/:username" element={<UserPage />} />
+                <Route path="/test/test" element={<UserSearch />} />
               </>
             )}
             {/* Check if user is authenticated and admin before rendering admin-only routes */}

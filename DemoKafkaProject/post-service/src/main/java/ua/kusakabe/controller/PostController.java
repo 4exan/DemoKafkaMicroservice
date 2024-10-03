@@ -29,12 +29,12 @@ public class PostController {
         return ResponseEntity.ok(postService.getAllPostsByUsername(username));
     }
 
-    @PostMapping("/like/{postId}")
+    @GetMapping("/like/{postId}")
     public void likePost(@RequestHeader("Authorization") String token, @PathVariable("postId") int postId){
         postService.likePost(token, postId);
     }
 
-    @PostMapping("/dislike/{postId}")
+    @GetMapping("/dislike/{postId}")
     public void dislikePost(@RequestHeader("Authorization") String token, @PathVariable("postId") int postId){
         postService.dislikePost(token, postId);
     }

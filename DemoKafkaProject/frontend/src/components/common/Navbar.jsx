@@ -29,30 +29,30 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="navbar tred border-b-2 py-2">
+    <nav className="navbar tred border-b-2 border-gray-400 py-2">
       <ul>
         {
-          <li className="inline font-montserrat text-xl transition-all hover:bg-black hover:text-white p-2">
+          <li className="inline font-montserrat text-xl transition-all hover:border-y-2 hover:border-black hover:rounded-lg px-4">
             <Link to="/">Home</Link>
           </li>
         }
         {!isAuthenticated && (
-          <li className="inline font-montserrat text-xl transition-all hover:bg-black hover:text-white p-2">
+          <li className="inline font-montserrat text-xl transition-all hover:border-y-2 hover:border-black hover:rounded-lg px-4">
             <Link to="/login">Login</Link>
           </li>
         )}
         {!isAuthenticated && (
-          <li className="inline font-montserrat text-xl transition-all hover:bg-black hover:text-white p-2">
+          <li className="inline font-montserrat text-xl transition-all hover:border-y-2 hover:border-black hover:rounded-lg px-4">
             <Link to="/registration">Registration</Link>
           </li>
         )}
         {isAuthenticated && (
-          <li className="inline font-montserrat text-xl transition-all hover:bg-black hover:text-white p-2">
+          <li className="inline font-montserrat text-xl transition-all hover:border-y-2 hover:border-black hover:rounded-lg px-4">
             <Link to="/user/profile">My Profile</Link>
           </li>
         )}
         {isAuthenticated && (
-          <li className="dropdown inline font-montserrat text-xl transition-all hover:bg-black hover:text-white p-2">
+          <li className="dropdown inline font-montserrat text-xl transition-all hover:bg-black hover:text-white p-4">
             <button onClick={toggleDropdown}>Posts</button>
             <div className="dropdown-container">
               <Link className="dropdown-item" to={"/post/feed"}>
@@ -75,8 +75,8 @@ export default function Navbar() {
           </li>
         )} */}
         {isAuthenticated && (
-          <li className="inline font-montserrat text-xl transition-all hover:bg-black hover:text-white p-2">
-            <Link to="/user/search">Users</Link>
+          <li className="inline font-montserrat text-xl transition-all hover:bg-black hover:text-white p-4">
+            <Link to="/test/test">Users</Link>
           </li>
         )}
         {isAuthenticated && (

@@ -72,27 +72,29 @@ body {
   margin: auto;
 
   width: 800px;
-  height: 500px;
+  height: 700px;
   overflow-y: scroll;
   overflow-x: hidden;
   overflow-wrap: break-word;
   scroll-behavior: smooth;
 }
 
-.table-container::-webkit-scrollbar {
-  width: 4px; /* Width of the scrollbar */
+.table-scroll::-webkit-scrollbar {
+  width: 2px; /* Width of the scrollbar */
 }
 
-.table-container::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Track color */
+.table-scroll::-webkit-scrollbar-track {
+  /* background: #f1f1f1; Track color */
+  background: transparent;
 }
 
-.table-container::-webkit-scrollbar-thumb {
-  background: #cccccc; /* Thumb color */
+.table-scroll::-webkit-scrollbar-thumb {
+  /* background: #cccccc; Thumb color */
+  background: transparent;
   border-radius: 10px; /* Round edges */
 }
 
-.table-container::-webkit-scrollbar-thumb:hover {
+.table-scroll::-webkit-scrollbar-thumb:hover {
   background: #929292; /* Thumb color on hover */
   transition: all 1s;
 }
