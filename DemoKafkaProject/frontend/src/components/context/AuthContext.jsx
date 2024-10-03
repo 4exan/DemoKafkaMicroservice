@@ -9,7 +9,9 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (localStorage.getItem("token") != "") {
-      login();
+      console.log("Token is found but not verified!");
+    } else {
+      setIsAuthencticated(false);
     }
   }, []);
 

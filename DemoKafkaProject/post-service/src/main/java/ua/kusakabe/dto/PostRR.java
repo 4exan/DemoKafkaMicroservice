@@ -1,11 +1,15 @@
 package ua.kusakabe.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.RequiredArgsConstructor;
 import ua.kusakabe.entity.Post;
 
 import java.util.List;
 
 @RequiredArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PostRR {
 
     private int StatusCode;

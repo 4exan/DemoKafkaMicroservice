@@ -7,6 +7,7 @@ export default function Navbar() {
   const { isAuthenticated, isAdmin, logout } = useAuth();
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const [dropdownVisible, setDropdownVisible] = useState(false);
 
   const handleLogout = () => {
     const confirmLogout = window.confirm("Are you sure you want to logout?");
@@ -21,6 +22,10 @@ export default function Navbar() {
     if (search != "") {
       navigate(`/user/${search}`);
     }
+  };
+
+  const toggleDropdown = () => {
+    setDropdownVisible(() => !dropdownVisible);
   };
 
   return (
@@ -47,8 +52,16 @@ export default function Navbar() {
           </li>
         )}
         {isAuthenticated && (
-          <li className="inline font-montserrat text-xl transition-all hover:bg-black hover:text-white p-2">
-            <Link to="/user/dashboard">Posts</Link>
+          <li className="dropdown inline font-montserrat text-xl transition-all hover:bg-black hover:text-white p-2">
+            <button onClick={toggleDropdown}>Posts</button>
+            <div className="dropdown-container">
+              <Link className="dropdown-item" to={"/post/feed"}>
+                Feed
+              </Link>
+              <Link className="dropdown-item" to={"/post/liked"}>
+                Liked
+              </Link>
+            </div>
           </li>
         )}
         {/* {isAdmin && (

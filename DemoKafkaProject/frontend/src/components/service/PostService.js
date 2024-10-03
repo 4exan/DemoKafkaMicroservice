@@ -3,7 +3,7 @@ import axios from "axios";
 export default class PostService {
   static BASE_URL = "http://localhost:8765";
 
-  static async getUserPosts(token) {
+  static async getProfilePosts(token) {
     try {
       const response = await axios.get(`${this.BASE_URL}/post/get`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -14,7 +14,7 @@ export default class PostService {
     }
   }
 
-  static async getOtherUserPosts(token, username) {
+  static async getUserPosts(token, username) {
     try {
       const response = await axios.get(
         `${this.BASE_URL}/post/user/${username}`,
@@ -25,6 +25,17 @@ export default class PostService {
       return response.data;
     } catch (err) {
       throw err;
+    }
+  }
+
+  static async getUserLikes(token) {
+    try {
+      const response = await axios.get(`${this.BASE_URL}/post/like/get`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
     }
   }
 

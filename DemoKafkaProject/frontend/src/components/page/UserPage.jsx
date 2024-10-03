@@ -27,10 +27,7 @@ export default function UserPage() {
   const fetchUserPosts = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await PostService.getOtherUserPosts(
-        token,
-        state.username
-      );
+      const response = await PostService.getUserPosts(token, state.username);
       setPosts(response.postList.sort((a, b) => b.id - a.id));
     } catch (error) {
       throw error;

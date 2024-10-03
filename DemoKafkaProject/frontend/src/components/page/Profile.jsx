@@ -7,14 +7,18 @@ import PostModal from "../common/PostModal";
 
 export default function Profile() {
   const [profile, setProfile] = useState({});
-  const [posts, setPosts] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [doFetchPost, setDoFetchPost] = useState(false);
   const [filteredPosts, setFilteredPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  const [isFiltered, setIsFiltered] = useState(false);
+
+  const [fullInfo, setFullInfo] = useState([]);
+
+  // USE EFFECT HERE
   useEffect(() => {
-    fetchUserProfile();
-    fetchUserPosts();
+    fetchData();
   }, []);
 
   function openModal() {
@@ -25,23 +29,60 @@ export default function Profile() {
     setIsOpen(false);
   }
 
-  const fetchUserProfile = async () => {
+  //Fetch all data in one method
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const [profileData, postData, likeData] = await Promise.all([
+        fetchUserProfile(),
+        fetchUserPosts(),
+        fetchProfileLikes(),
+      ]);
+      setProfile(profileData);
+      configurePosts(postData.postList, likeData.postList);
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const configurePosts = (postsR, likesR) => {
+    const extendedPosts = postsR.map((post) => {
+      const likeInfo = likesR.find((like) => like.id === post.id);
+      return {
+        ...post,
+        isLiked: likeInfo ? true : false,
+      };
+    });
+    setFullInfo(extendedPosts);
+  };
+
+  const fetchUserProfile = () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await AuthService.getMyProfile(token);
-      setProfile(response);
+      const response = AuthService.getMyProfile(token);
+      return response;
     } catch (error) {
       throw error;
     }
   };
 
-  const fetchUserPosts = async () => {
+  const fetchUserPosts = () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await PostService.getUserPosts(token);
-      console.log(response.postList); //REMOVE
-      setPosts(response.postList.sort((a, b) => b.id - a.id));
-      setFilteredPosts(posts);
+      const response = PostService.getProfilePosts(token);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const fetchProfileLikes = () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = PostService.getUserLikes(token);
+      return response;
     } catch (error) {
       throw error;
     }
@@ -62,78 +103,102 @@ export default function Profile() {
     }
   };
 
-  return (
-    <div className="px-10 py-5" id="profile">
-      <h1 className="font-semibold text-2xl text-center font-montserrat">
-        Profile page!
-      </h1>
-      <div>
-        <p className="font-semibold text-xl font-montserrat">
-          Username:{" "}
-          <span className="font-normal text-xl mx-2 font-montserrat">
-            {profile.username}
-          </span>
-        </p>
-        <p className="font-semibold text-xl font-montserrat">
-          Full name:
-          <span className="font-normal text-xl mx-2 font-montserrat">
-            {profile.firstName} {profile.lastName}
-          </span>
-        </p>
-        <p className="font-semibold text-xl font-montserrat">
-          Email:
-          <span className="font-normal text-xl mx-2 font-montserrat">
-            {profile.email}
-          </span>
-        </p>
-        <p className="font-semibold text-xl font-montserrat">
-          Phone:
-          <span className="font-normal text-xl mx-2 font-montserrat">
-            {profile.phone}
-          </span>
-        </p>
-      </div>
-      <div>
-        <h1 className="text-center font-bold text-2xl my-4">Posts!</h1>
-        <div className="my-4 text-center">
-          <button
-            className="text-3xl font-semibold transition-all hover:bg-black hover:text-white border-2 border-black px-3 rounded-full"
-            onClick={() => openModal()}
-          >
-            +
-          </button>
+  function filterPost() {
+    if (isFiltered) {
+      const filteredPosts = fullInfo.sort((a, b) => a.id - b.id);
+      setFullInfo(filteredPosts);
+      setIsFiltered(!isFiltered);
+    } else {
+      const filteredPosts = fullInfo.sort((a, b) => b.id - a.id);
+      setFullInfo(filteredPosts);
+      setIsFiltered(!isFiltered);
+    }
+  }
+
+  if (!loading) {
+    return (
+      <div className="px-10 py-5" id="profile">
+        <h1 className="font-semibold text-2xl text-center font-montserrat">
+          Profile page!
+        </h1>
+        <div>
+          <p className="font-semibold text-xl font-montserrat">
+            Username:{" "}
+            <span className="font-normal text-xl mx-2 font-montserrat">
+              {profile.username}
+            </span>
+          </p>
+          <p className="font-semibold text-xl font-montserrat">
+            Full name:
+            <span className="font-normal text-xl mx-2 font-montserrat">
+              {profile.firstName} {profile.lastName}
+            </span>
+          </p>
+          <p className="font-semibold text-xl font-montserrat">
+            Email:
+            <span className="font-normal text-xl mx-2 font-montserrat">
+              {profile.email}
+            </span>
+          </p>
+          <p className="font-semibold text-xl font-montserrat">
+            Phone:
+            <span className="font-normal text-xl mx-2 font-montserrat">
+              {profile.phone}
+            </span>
+          </p>
         </div>
-        <div className="table-container">
-          <table className="">
-            <thead className=""></thead>
-            <tbody>
-              {posts.map((post) => (
-                <tr className="">
-                  <td className="break-normal">
-                    <Post post={post} key={post.id} />
-                  </td>
-                  <td className="px-4">
-                    <button
-                      onClick={() => handleRemovePost(post.id)}
-                      className=""
-                    >
-                      Remove
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div>
+          <h1 className="text-center font-bold text-2xl my-4">Posts!</h1>
+          <div className="my-4 w-1/2 m-auto h-1/2 border-b-2 border-x-2 py-2 rounded-lg border-gray-400">
+            <button
+              className="mx-2 text-3xl font-semibold transition-all hover:bg-black hover:text-white border-2 border-black px-3 rounded-full"
+              onClick={() => openModal()}
+            >
+              +
+            </button>
+            <button
+              className="mx-2 text-m font-semibold transition-all hover:bg-black hover:text-white border-2 border-black px-3 rounded-full align-text-bottom"
+              onClick={filterPost}
+            >
+              Filter
+            </button>
+          </div>
+          <div className="table-container">
+            <table className="">
+              <thead className=""></thead>
+              <tbody>
+                {fullInfo.map((post) => (
+                  <tr className="">
+                    <td className="break-normal py-2">
+                      <Post post={post} key={post.id} />
+                    </td>
+                    <td className="px-4">
+                      <button
+                        onClick={() => handleRemovePost(post.id)}
+                        className=""
+                      >
+                        Remove
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div hidden={!isOpen}>
+          <PostModal
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            fetchUserPosts={fetchUserPosts}
+            setDoFetchPost={setDoFetchPost}
+          />
         </div>
       </div>
-      <div hidden={!isOpen}>
-        <PostModal
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          fetchUserPosts={fetchUserPosts}
-          setDoFetchPost={setDoFetchPost}
-        />
-      </div>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div className="loader absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+    );
+  }
 }

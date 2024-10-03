@@ -13,9 +13,8 @@ import java.util.Objects;
 @Table(name = "users")
 public class User implements UserDetails {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Id
     private String username;
     private String password;
     private String firstName;
