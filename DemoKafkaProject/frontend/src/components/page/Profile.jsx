@@ -208,6 +208,7 @@ export default function Profile() {
                             likePost={handleLikeButton}
                             dislikePost={handleDislikeButton}
                             user={profile.username}
+                            postOwner={true}
                           />
                         </td>
                       </tr>

@@ -7,6 +7,7 @@ export default function Post({
   likePost,
   dislikePost,
   user,
+  postOwner,
 }) {
   const [isLiked, setIsLiked] = useState(post.isLiked);
 
@@ -47,7 +48,7 @@ export default function Post({
         >
           {handleShowLike()}
         </button>
-        {user === post.username ? (
+        {postOwner ? (
           <button
             className="px-2 hover:bg-red-600 hover:text-white transition-all"
             onClick={() => removePost(post.id)}
