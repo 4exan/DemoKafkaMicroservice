@@ -8,6 +8,7 @@ import RegistrationPage from "./components/auth/RegistrationPage";
 import HomePage from "./components/page/HomePage";
 import Profile from "./components/page/Profile";
 import UserSearch from "./components/page/UserSearch";
+import UserPage from "./components/page/UserPage";
 
 export default function App() {
   const { isAuthenticated, isAdmin } = useAuth();
@@ -25,7 +26,8 @@ export default function App() {
               <>
                 {/* Routes for authenticated users*/}
                 <Route path="/user/profile" element={<Profile />} />
-                <Route path="/user/search" element={<UserSearch />} />
+                <Route path="/user/search/:username" element={<UserPage />} />
+                <Route path="/test/test" element={<UserSearch />} />
               </>
             )}
             {/* Check if user is authenticated and admin before rendering admin-only routes */}

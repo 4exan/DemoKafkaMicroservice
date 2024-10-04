@@ -63,7 +63,7 @@ body {
   border: 1px solid black;
   border-radius: 25px;
 
-  padding: 5px 10px;
+  padding: 2px 9px;
 }
 
 /* PROFILE TABLE */
@@ -72,28 +72,30 @@ body {
   margin: auto;
 
   width: 800px;
-  height: 600px;
+  height: 700px;
   overflow-y: scroll;
   overflow-x: hidden;
   overflow-wrap: break-word;
   scroll-behavior: smooth;
 }
 
-.table-container::-webkit-scrollbar {
-  width: 4px; /* Width of the scrollbar */
+.table-scroll::-webkit-scrollbar {
+  width: 2px; /* Width of the scrollbar */
 }
 
-.table-container::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Track color */
+.table-scroll::-webkit-scrollbar-track {
+  /* background: #f1f1f1; Track color */
+  background: transparent;
 }
 
-.table-container::-webkit-scrollbar-thumb {
-  background: #5a5a5a; /* Thumb color */
+.table-scroll::-webkit-scrollbar-thumb {
+  /* background: #cccccc; Thumb color */
+  background: transparent;
   border-radius: 10px; /* Round edges */
 }
 
-.table-container::-webkit-scrollbar-thumb:hover {
-  background: #555; /* Thumb color on hover */
+.table-scroll::-webkit-scrollbar-thumb:hover {
+  background: #929292; /* Thumb color on hover */
   transition: all 1s;
 }
 
@@ -104,4 +106,49 @@ body {
 
 .width800 {
   width: 700px;
+}
+
+.dropdown {
+  /* float: left; */
+  overflow: hidden;
+}
+
+.dropdown-container {
+  display: none;
+  position: absolute;
+  width: 100px;
+  left: 180px;
+  top: 45px;
+  background-color: white;
+  color: black;
+
+  text-align: center;
+
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-item {
+  display: block;
+}
+
+.dropdown:hover .dropdown-container {
+  display: block;
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 45px;
+  aspect-ratio: 0.75;
+  --c: no-repeat linear-gradient(#000 0 0);
+  background: var(--c) 0% 50%, var(--c) 50% 50%, var(--c) 100% 50%;
+  background-size: 20% 60%;
+  animation: l9 1s infinite;
+}
+@keyframes l9 {
+  33% {
+    background-position: 0% 0%, 50% 100%, 100% 0%;
+  }
+  66% {
+    background-position: 0% 100%, 50% 0%, 100% 100%;
+  }
 }

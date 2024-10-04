@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 @Cacheable("users")
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findByUsername(String username);
 }

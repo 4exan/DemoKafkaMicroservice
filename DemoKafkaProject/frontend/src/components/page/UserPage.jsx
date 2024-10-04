@@ -1,35 +1,21 @@
-import { useState } from "react";
-import { useEffect } from "react";
-import AuthService from "../service/AuthService";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router";
+import UserService from "../service/UserService";
 import PostService from "../service/PostService";
 import Post from "../common/Post";
-import PostModal from "../common/PostModal";
 
-export default function Profile() {
+export default function UserPage() {
+  const { state } = useLocation();
   const [profile, setProfile] = useState({});
-  const [isOpen, setIsOpen] = useState(false);
-  const [doFetchPost, setDoFetchPost] = useState(false);
-  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [fullInfo, setFullInfo] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const [isFiltered, setIsFiltered] = useState(false);
 
-  const [fullInfo, setFullInfo] = useState([]);
-
-  // USE EFFECT HERE
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [state.username]);
 
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  function closeModal() {
-    setIsOpen(false);
-  }
-
-  //Fetch all data in one method
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -40,8 +26,8 @@ export default function Profile() {
       ]);
       setProfile(profileData);
       configurePosts(postData.postList, likeData.postList);
-    } catch (error) {
-      throw error;
+    } catch (e) {
+      throw e;
     } finally {
       setLoading(false);
     }
@@ -58,46 +44,31 @@ export default function Profile() {
     setFullInfo(extendedPosts);
   };
 
-  const fetchUserProfile = () => {
+  const fetchUserProfile = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = AuthService.getMyProfile(token);
+      const response = await UserService.getUserProfile(token, state.username);
       return response;
     } catch (error) {
       throw error;
     }
   };
 
-  const fetchUserPosts = () => {
+  const fetchUserPosts = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = PostService.getProfilePosts(token);
+      const response = await PostService.getUserPosts(token, state.username);
       return response;
     } catch (error) {
       throw error;
     }
   };
 
-  const fetchProfileLikes = () => {
+  const fetchProfileLikes = async () => {
     try {
       const token = localStorage.getItem("token");
       const response = PostService.getUserLikes(token);
       return response;
-    } catch (error) {
-      throw error;
-    }
-  };
-
-  const handleRemovePost = async (id) => {
-    try {
-      const confirmDelete = window.confirm(
-        "Are you sure you want to delete this post?"
-      );
-      const token = localStorage.getItem("token");
-      if (confirmDelete) {
-        await PostService.deletePosts(token, id);
-      }
-      fetchUserPosts();
     } catch (error) {
       throw error;
     }
@@ -179,12 +150,6 @@ export default function Profile() {
             <div>
               <div className="my-4 m-auto h-1/2 border-b border-x py-2 rounded-lg border-gray-400 shadow-lg bg-white">
                 <button
-                  className="mx-2 text-3xl font-semibold transition-all hover:bg-black hover:text-white border-2 border-black px-3 rounded-full"
-                  onClick={() => openModal()}
-                >
-                  +
-                </button>
-                <button
                   className="mx-2 text-m font-semibold transition-all hover:bg-black hover:text-white border-2 border-black px-3 rounded-full align-text-bottom"
                   onClick={filterPost}
                 >
@@ -204,11 +169,9 @@ export default function Profile() {
                           <Post
                             post={post}
                             key={post.id}
-                            removePost={handleRemovePost}
                             likePost={handleLikeButton}
                             dislikePost={handleDislikeButton}
                             user={profile.username}
-                            postOwner={true}
                           />
                         </td>
                       </tr>
@@ -219,16 +182,6 @@ export default function Profile() {
             </div>
           </div>
           {/* RIGHT PANEL - OTHER*/}
-          <div className="w-1/3 flex items-center justify-center">
-            <div hidden={!isOpen}>
-              <PostModal
-                isOpen={isOpen}
-                setIsOpen={setIsOpen}
-                fetchUserPosts={fetchUserPosts}
-                setDoFetchPost={setDoFetchPost}
-              />
-            </div>
-          </div>
         </div>
         {/* ----------------- */}
       </>
