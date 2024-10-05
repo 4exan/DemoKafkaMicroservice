@@ -6,14 +6,29 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthencticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [payload, setPayload] = useState({
+    token: "",
+  });
 
   useEffect(() => {
-    if (localStorage.getItem("token") != "") {
-      console.log("Token is found but not verified!");
-    } else {
-      setIsAuthencticated(false);
-    }
+    isTokenExpired();
   }, []);
+
+  const isTokenExpired = async (token) => {
+    const localToken = localStorage.getItem("token");
+    setPayload(() => (payload.token = localToken));
+    try {
+      const response = await AuthService.tokenValidation(payload);
+      console.log(response);
+      if (response === 200) {
+        login();
+      } else {
+        logout();
+      }
+    } catch (e) {
+      throw e;
+    }
+  };
 
   const login = () => {
     setIsAuthencticated(true);

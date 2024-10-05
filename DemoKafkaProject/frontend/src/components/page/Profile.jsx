@@ -148,6 +148,7 @@ export default function Profile() {
               className="w-full h-auto max-w-xs mb-4 rounded-full"
               alt="sample"
             />
+            <div></div>
             <div className="border-b-2 border-gray-400 w-1/2">
               <p className="font-semibold text-3xl py-2">
                 {profile.firstName} {profile.lastName}

@@ -172,6 +172,7 @@ export default function UserPage() {
                             likePost={handleLikeButton}
                             dislikePost={handleDislikeButton}
                             user={profile.username}
+                            postOwner={false}
                           />
                         </td>
                       </tr>
