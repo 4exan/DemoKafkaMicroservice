@@ -14,4 +14,34 @@ export default class UserService {
       throw err;
     }
   }
+
+  static async uploadImage(formData, token) {
+    try {
+      const response = await axios.post(
+        `${this.BASE_URL}/user/image`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async downloadImage(username, token) {
+    try {
+      const response = await axios.get(
+        `${this.BASE_URL}/user/image/${username}`,
+        { headers: { Authorization: `Bearer ${token}` }, responseType: "blob" }
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

@@ -52,13 +52,19 @@ export default function Navbar() {
           </li>
         )}
         {isAuthenticated && (
-          <li className="dropdown inline font-montserrat text-xl transition-all hover:bg-black hover:text-white p-4">
+          <li className="dropdown inline font-montserrat text-xl transition-all hover:border-y-2 hover:border-black hover:rounded-lg px-4">
             <button onClick={toggleDropdown}>Posts</button>
-            <div className="dropdown-container">
-              <Link className="dropdown-item" to={"/post/feed"}>
+            <div className="dropdown-container ">
+              <Link
+                className="dropdown-item transition-all hover:border-y-2 hover:border-black hover:rounded-lg"
+                to={"/post/feed"}
+              >
                 Feed
               </Link>
-              <Link className="dropdown-item" to={"/post/liked"}>
+              <Link
+                className="dropdown-item transition-all hover:border-y-2 hover:border-black hover:rounded-lg"
+                to={"/post/liked"}
+              >
                 Liked
               </Link>
             </div>
@@ -75,7 +81,7 @@ export default function Navbar() {
           </li>
         )} */}
         {isAuthenticated && (
-          <li className="inline font-montserrat text-xl transition-all hover:bg-black hover:text-white p-4">
+          <li className="inline font-montserrat text-xl transition-all hover:border-y-2 hover:border-black hover:rounded-lg px-4">
             <Link to="/test/test">Users</Link>
           </li>
         )}
@@ -91,7 +97,7 @@ export default function Navbar() {
               onChange={(e) => setSearch(e.target.value)}
             />
             <Link
-              className=" mx-2 px-2 border-x-2 border-transparent transition-all hover:border-x-2 hover:border-white hover:rounded-lg hover:bg-black hover:text-white"
+              className="inline font-montserrat text-xl transition-all hover:border-y-2 hover:border-black hover:rounded-lg px-4"
               to={`/user/search/${search}`}
               state={{ username: `${search}` }}
             >
@@ -100,7 +106,7 @@ export default function Navbar() {
           </li>
         )}
         {isAuthenticated && (
-          <li className="inline absolute top-0 right-0 font-montserrat text-xl transition-all hover:bg-black hover:text-white p-2">
+          <li className="inline absolute right-0 font-montserrat text-xl transition-all hover:border-y-2 hover:border-black hover:rounded-lg px-4">
             <Link to="/" onClick={handleLogout}>
               Logout
             </Link>

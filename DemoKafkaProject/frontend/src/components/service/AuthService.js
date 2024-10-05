@@ -38,6 +38,18 @@ export default class AuthService {
     }
   }
 
+  static async tokenValidation(token) {
+    try {
+      const response = await axios.post(
+        `${AuthService.BASE_URL}/auth/validate`,
+        token
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   /**AUTHENTICATION CHECKER */
 
   static logout() {

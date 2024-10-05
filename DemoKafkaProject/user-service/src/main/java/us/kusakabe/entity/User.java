@@ -17,6 +17,18 @@ public class User {
     private String phone;
     private String role;
 
+    @OneToOne
+    @JoinColumn(name = "img_id")
+    private ProfilePicture img;
+
+    public ProfilePicture getImg() {
+        return img;
+    }
+
+    public void setImg(ProfilePicture img) {
+        this.img = img;
+    }
+
     public User() {
     }
 

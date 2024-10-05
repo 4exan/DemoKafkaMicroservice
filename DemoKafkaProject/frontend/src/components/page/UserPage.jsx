@@ -3,6 +3,7 @@ import { useLocation } from "react-router";
 import UserService from "../service/UserService";
 import PostService from "../service/PostService";
 import Post from "../common/Post";
+import ProfileSection from "../common/Sections/ProfileSection";
 
 export default function UserPage() {
   const { state } = useLocation();
@@ -41,7 +42,7 @@ export default function UserPage() {
         isLiked: likeInfo ? true : false,
       };
     });
-    setFullInfo(extendedPosts);
+    setFullInfo(extendedPosts.sort((a, b) => b.id - a.id));
   };
 
   const fetchUserProfile = async () => {
@@ -113,38 +114,7 @@ export default function UserPage() {
       <>
         <div className="flex h-screen">
           {/* LEFT PANEL - PROFILE*/}
-          <div className="w-1/3 flex flex-col items-start justify-start  p-4">
-            <img
-              src="https://via.placeholder.com/150"
-              className="w-full h-auto max-w-xs mb-4 rounded-full"
-              alt="sample"
-            />
-            <div className="border-b-2 border-gray-400 w-1/2">
-              <p className="font-semibold text-3xl py-2">
-                {profile.firstName} {profile.lastName}
-              </p>
-            </div>
-            <div className="">
-              <p className="font-semibold text-xl font-montserrat pt-2">
-                Username:{" "}
-                <span className="font-normal text-xl mx-2 font-montserrat">
-                  {profile.username}
-                </span>
-              </p>
-              <p className="font-semibold text-xl font-montserrat">
-                Email:
-                <span className="font-normal text-xl mx-2 font-montserrat">
-                  {profile.email}
-                </span>
-              </p>
-              <p className="font-semibold text-xl font-montserrat">
-                Phone:
-                <span className="font-normal text-xl mx-2 font-montserrat">
-                  {profile.phone}
-                </span>
-              </p>
-            </div>
-          </div>
+          <ProfileSection profile={profile} isOwner={false} />
           {/* CENTRAL PANEL - POSTS*/}
           <div className="w-2/5 flex items-start justify-center border-x-2 border-gray-300 shadow-black shadow-2xl bg-gray-300">
             <div>
@@ -172,6 +142,7 @@ export default function UserPage() {
                             likePost={handleLikeButton}
                             dislikePost={handleDislikeButton}
                             user={profile.username}
+                            postOwner={false}
                           />
                         </td>
                       </tr>
