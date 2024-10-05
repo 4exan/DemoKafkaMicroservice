@@ -69,14 +69,14 @@ export default function LikedPosts() {
         </div>
         {/* CENTRAL PANEL */}
         <div className="w-2/5 flex items-start justify-center border-x-2 border-gray-300 shadow-black shadow-2xl bg-gray-300">
-          <div className="flex-grow overflow-y-scroll max-h-[calc(100vh-100px)] max-w-[calc(100vh-350px)] table-scroll">
+          <div className="flex-grow overflow-y-scroll max-h-[calc(100vh-100px)] max-w-[calc(100vh-350px)] table-scroll scroll-smooth">
             <table>
               <thead></thead>
               <tbody>
                 {posts.map((post) => (
                   <tr>
                     <td>
-                      <div className="border-x-2 border-t-2 bg-gray-200 border-gray-600 rounded-t-lg mt-4 w-fit ml-2">
+                      <div className="border-x-2 border-t-2 bg-gray-200 border-gray-600 rounded-t-lg mt-4 w-fit ml-2 hover:bg-slate-700 hover:text-white hover:font-semibold">
                         <Link
                           to={`/user/search/${post.username}`}
                           state={{ username: `${post.username}` }}

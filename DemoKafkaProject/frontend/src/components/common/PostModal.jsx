@@ -2,12 +2,7 @@ import { useState } from "react";
 import PostService from "../service/PostService";
 import { useNavigate } from "react-router";
 
-export default function PostModal({
-  isOpen,
-  setIsOpen,
-  fetchUserPosts,
-  setDoFetchPost,
-}) {
+export default function PostModal({ setIsOpen }) {
   const [formData, setFormData] = useState({
     title: "",
     content: "",
@@ -34,15 +29,14 @@ export default function PostModal({
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
     try {
+      e.preventDefault();
       const token = localStorage.getItem("token");
       await PostService.createNewPosts(token, formData);
       setFormData({
         title: "",
         content: "",
       });
-      setDoFetchPost(true);
       setIsOpen(false);
     } catch (error) {
       throw error;

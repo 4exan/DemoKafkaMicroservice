@@ -54,11 +54,17 @@ export default function Navbar() {
         {isAuthenticated && (
           <li className="dropdown inline font-montserrat text-xl transition-all hover:border-y-2 hover:border-black hover:rounded-lg px-4">
             <button onClick={toggleDropdown}>Posts</button>
-            <div className="dropdown-container">
-              <Link className="dropdown-item" to={"/post/feed"}>
+            <div className="dropdown-container ">
+              <Link
+                className="dropdown-item transition-all hover:border-y-2 hover:border-black hover:rounded-lg"
+                to={"/post/feed"}
+              >
                 Feed
               </Link>
-              <Link className="dropdown-item" to={"/post/liked"}>
+              <Link
+                className="dropdown-item transition-all hover:border-y-2 hover:border-black hover:rounded-lg"
+                to={"/post/liked"}
+              >
                 Liked
               </Link>
             </div>
