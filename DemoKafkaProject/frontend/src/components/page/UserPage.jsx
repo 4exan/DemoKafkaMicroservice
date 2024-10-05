@@ -3,7 +3,7 @@ import { useLocation } from "react-router";
 import UserService from "../service/UserService";
 import PostService from "../service/PostService";
 import Post from "../common/Post";
-import ProfileSection from "../common/ProfileSection";
+import ProfileSection from "../common/Sections/ProfileSection";
 
 export default function UserPage() {
   const { state } = useLocation();
@@ -114,7 +114,7 @@ export default function UserPage() {
       <>
         <div className="flex h-screen">
           {/* LEFT PANEL - PROFILE*/}
-          <ProfileSection profile={profile} />
+          <ProfileSection profile={profile} isOwner={false} />
           {/* CENTRAL PANEL - POSTS*/}
           <div className="w-2/5 flex items-start justify-center border-x-2 border-gray-300 shadow-black shadow-2xl bg-gray-300">
             <div>

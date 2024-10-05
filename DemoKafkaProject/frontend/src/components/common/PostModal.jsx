@@ -1,13 +1,11 @@
 import { useState } from "react";
 import PostService from "../service/PostService";
-import { useNavigate } from "react-router";
 
 export default function PostModal({ setIsOpen }) {
   const [formData, setFormData] = useState({
     title: "",
     content: "",
   });
-  const navigate = useNavigate();
   const [contentCounter, setContentCounter] = useState(254);
   const [titleCounter, setTitleCounter] = useState(49);
 

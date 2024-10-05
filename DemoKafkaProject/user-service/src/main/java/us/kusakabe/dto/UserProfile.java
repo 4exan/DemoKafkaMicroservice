@@ -1,5 +1,13 @@
 package us.kusakabe.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.RequiredArgsConstructor;
+import us.kusakabe.entity.ProfilePicture;
+
+@RequiredArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserProfile {
 
     private String username;
@@ -7,17 +15,7 @@ public class UserProfile {
     private String lastName;
     private String email;
     private String phone;
-
-    public UserProfile() {
-    }
-
-    public UserProfile(String username, String firstName, String lastName, String email, String phone) {
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
-    }
+    private ProfilePicture profilePicture;
 
     public String getUsername() {
         return username;
@@ -59,14 +57,11 @@ public class UserProfile {
         this.phone = phone;
     }
 
-    @Override
-    public String toString() {
-        return "UserProfile{" +
-                "username='" + username + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                '}';
+    public ProfilePicture getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(ProfilePicture profilePicture) {
+        this.profilePicture = profilePicture;
     }
 }

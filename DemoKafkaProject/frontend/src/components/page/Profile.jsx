@@ -4,7 +4,8 @@ import AuthService from "../service/AuthService";
 import PostService from "../service/PostService";
 import Post from "../common/Post";
 import PostModal from "../common/PostModal";
-import ProfileSection from "../common/ProfileSection";
+import ProfileSection from "../common/Sections/ProfileSection";
+import EditProfilePictureModal from "../common/EditProfilePictureModal";
 
 export default function Profile() {
   const [profile, setProfile] = useState({});
@@ -141,7 +142,7 @@ export default function Profile() {
       <>
         <div className="flex h-screen">
           {/* LEFT PANEL - PROFILE*/}
-          <ProfileSection profile={profile} />
+          <ProfileSection profile={profile} isOwner={true} />
           {/* CENTRAL PANEL - POSTS*/}
           <div className="w-2/5 flex items-start justify-center border-x-2 border-gray-300 shadow-black shadow-2xl bg-gray-300">
             <div>
@@ -190,6 +191,9 @@ export default function Profile() {
           <div className="w-1/3 flex items-center justify-center">
             <div hidden={!isOpen}>
               <PostModal setIsOpen={setIsOpen} />
+            </div>
+            <div>
+              <EditProfilePictureModal setIsOpen={true} />
             </div>
           </div>
         </div>
