@@ -44,4 +44,54 @@ export default class UserService {
       throw error;
     }
   }
+
+  static async followUser(token, username) {
+    try {
+      const response = await axios.get(
+        `${this.BASE_URL}/user/follow/${username}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async unfollowUser(token, username) {
+    try {
+      const response = await axios.get(
+        `${this.BASE_URL}/user/unfollow/${username}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async isUserFollowed(token, username) {
+    try {
+      const response = await axios.get(
+        `${UserService.BASE_URL}/user/followed/${username}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
+/*
+FOLLOWER - FOLLOWED
+4exan -> Svoboda
+4exan -> Aboba
+4exan -> Impostor
+
+Svoboda -> 4exan
+Impostor -> 4exan
+
+
+
+*/

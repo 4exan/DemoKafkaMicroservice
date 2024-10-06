@@ -37,7 +37,6 @@ export default function Profile() {
         fetchUserPosts(),
         fetchProfileLikes(),
       ]);
-      console.log(profileData);
       setProfile(profileData);
       configurePosts(postData.postList, likeData.postList);
     } catch (error) {
@@ -48,14 +47,24 @@ export default function Profile() {
   };
 
   const configurePosts = (postsR, likesR) => {
-    const extendedPosts = postsR.map((post) => {
-      const likeInfo = likesR.find((like) => like.id === post.id);
-      return {
-        ...post,
-        isLiked: likeInfo ? true : false,
-      };
-    });
-    setFullInfo(extendedPosts.sort((a, b) => b.id - a.id));
+    if (likesR) {
+      const extendedPosts = postsR.map((post) => {
+        const likeInfo = likesR.find((like) => like.id === post.id);
+        return {
+          ...post,
+          isLiked: likeInfo ? true : false,
+        };
+      });
+      setFullInfo(extendedPosts.sort((a, b) => b.id - a.id));
+    } else {
+      const extendedPosts = postsR.map((post) => {
+        return {
+          ...post,
+          isLiked: false,
+        };
+      });
+      setFullInfo(extendedPosts.sort((a, b) => b.id - a.id));
+    }
   };
 
   const fetchUserProfile = () => {
@@ -142,7 +151,11 @@ export default function Profile() {
       <>
         <div className="flex h-screen">
           {/* LEFT PANEL - PROFILE*/}
-          <ProfileSection profile={profile} isOwner={true} />
+          <ProfileSection
+            token={localStorage.getItem("token")}
+            profile={profile}
+            isOwner={true}
+          />
           {/* CENTRAL PANEL - POSTS*/}
           <div className="w-2/5 flex items-start justify-center border-x-2 border-gray-300 shadow-black shadow-2xl bg-gray-300">
             <div>

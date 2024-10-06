@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 export default function LikedPosts() {
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
-  //   const [extendedPosts, setExtendedPosts] = useState([])
 
   useEffect(() => {
     fetchData();

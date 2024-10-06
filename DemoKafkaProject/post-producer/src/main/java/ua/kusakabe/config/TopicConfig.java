@@ -12,9 +12,4 @@ public class TopicConfig {
         return new NewTopic("posts", 2, (short) 1);
     }
 
-    @Bean
-    public NewTopic likeTopic(){
-        return new NewTopic("likes", 1, (short) 1);
-    }
-
 }
