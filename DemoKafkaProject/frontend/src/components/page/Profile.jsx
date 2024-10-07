@@ -7,7 +7,7 @@ import Post from "../common/Post";
 import PostModal from "../common/PostModal";
 import ProfileSection from "../common/Sections/ProfileSection";
 import EditProfilePictureModal from "../common/EditProfilePictureModal";
-import EditProfileInfo from "../common/EditProfileInfo"
+import EditProfileInfo from "../common/EditProfileInfo";
 
 export default function Profile() {
   const [profile, setProfile] = useState({});
@@ -31,8 +31,8 @@ export default function Profile() {
     setIsOpen(false);
   }
 
-  function toggleEdit(){
-    setEditIsOpen(()=>!editIsOpen);
+  function toggleEdit() {
+    setEditIsOpen(() => !editIsOpen);
   }
 
   //Fetch all data in one method
@@ -108,7 +108,7 @@ export default function Profile() {
   const handleRemovePost = async (id) => {
     try {
       const confirmDelete = window.confirm(
-        "Are you sure you want to delete this post?"
+        "Are you sure you want to delete this post?",
       );
       const token = localStorage.getItem("token");
       if (confirmDelete) {
@@ -214,12 +214,19 @@ export default function Profile() {
             <div hidden={!isOpen}>
               <PostModal setIsOpen={setIsOpen} />
             </div>
-            <div className={editIsOpen ? `border-l-2 border-black p-4` : `hidden`}>
-              <h1 className="font-semibold text-xl text-center">Profile picture:</h1>
-              <EditProfilePictureModal isOpen={editIsOpen} setIsOpen={toggleEdit} />
+            <div
+              className={editIsOpen ? `border-l-2 border-black p-4` : `hidden`}
+            >
+              <h1 className="font-semibold text-xl text-center">
+                Profile picture:
+              </h1>
+              <EditProfilePictureModal
+                isOpen={editIsOpen}
+                setIsOpen={toggleEdit}
+              />
               <div className="border-t-2 border-black"></div>
               <h1>Profile information:</h1>
-              <EditProfileInfo/>
+              <EditProfileInfo profile={profile} />
             </div>
           </div>
         </div>

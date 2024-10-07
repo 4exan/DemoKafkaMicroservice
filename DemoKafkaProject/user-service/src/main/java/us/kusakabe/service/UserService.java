@@ -84,6 +84,25 @@ public class UserService {
         throw new RuntimeException("User not found!");
     }
 
+    public void editUserProfile(UserProfile req, String header) {
+        String username = jwtService.extractUsername(header.substring(7));
+        User user = userRepository.findByUsername(username).orElseThrow(()-> new RuntimeException("User not found!"));
+        try{
+            user.setFirstName(req.getFirstName());
+            user.setLastName(req.getLastName());
+            user.setEmail(req.getEmail());
+            user.setPhone(req.getPhone());
+            User savedUser = userRepository.save(user);
+            if(savedUser.getUsername().equals(username)) {
+                LOGGER.info("User: {} successfully edited!", username);
+            } else {
+                LOGGER.warn("User: {} not found!", username);
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error while editing user profile -> ", e);
+        }
+    }
+
     public void followUser(String followed, String header) {
         try{
             String follower = jwtService.extractUsername(header.substring(7));

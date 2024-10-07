@@ -30,7 +30,7 @@ export default function Post({
   }
 
   return (
-    <div className="max-w-[calc(100vh-370px)]">
+    <div className="max-w-[calc(100vh-370px)] min-w-96">
       <div className="text-left border-x-2 border-y-2 border-gray-600 h-auto rounded-t-md p-2 mt-0 bg-white">
         <h1 className="text-xl font-semibold" title={post.timestamp}>
           {post.title}

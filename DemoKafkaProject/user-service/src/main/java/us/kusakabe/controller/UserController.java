@@ -35,6 +35,11 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserProfile(username, header));
     }
 
+    @PutMapping("/edit")
+    public void editUser(@RequestBody UserProfile req, @RequestHeader("Authorization") String header){
+         userService.editUserProfile(req, header);
+    }
+
     @PostMapping("/image")
     public ResponseEntity<?> uploadProfilePicture(@RequestParam("image") MultipartFile image, @RequestHeader("Authorization") String header) throws IOException {
         imageService.uploadImage(image, header);

@@ -17,7 +17,6 @@ export default function RegistrationPage() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    console.log(formData);
   };
 
   const handleSubmit = async (e) => {
@@ -29,8 +28,8 @@ export default function RegistrationPage() {
       setFormData({
         username: "",
         password: "",
-        firstname: "",
-        lastname: "",
+        firstName: "",
+        lastName: "",
         email: "",
         phone: "",
         role: "USER",
@@ -74,8 +73,8 @@ export default function RegistrationPage() {
           <input
             type="text"
             className="relative -right-5 border-2 rounded-lg m-2 text-center border-gray-300 transition-all hover:border-black"
-            name="firstname"
-            value={formData.firstname}
+            name="firstName"
+            value={formData.firstName}
             onChange={handleInputChange}
           ></input>
         </div>
@@ -84,8 +83,8 @@ export default function RegistrationPage() {
           <input
             type="text"
             className="relative -right-6 border-2 rounded-lg m-2 text-center border-gray-300 transition-all hover:border-black"
-            name="lastname"
-            value={formData.lastname}
+            name="lastName"
+            value={formData.lastName}
             onChange={handleInputChange}
           ></input>
         </div>

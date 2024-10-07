@@ -27,6 +27,18 @@ export default class UserService {
     }
   }
 
+  static async editUserProfile(formData, token) {
+    try {
+      const response = await axios.put(`${this.BASE_URL}/user/edit`, formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log(response.data);
+      return response.data;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   static async uploadImage(formData, token) {
     try {
       const response = await axios.post(
@@ -37,7 +49,7 @@ export default class UserService {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
       return response.data;
     } catch (error) {
@@ -49,7 +61,7 @@ export default class UserService {
     try {
       const response = await axios.get(
         `${this.BASE_URL}/user/image/${username}`,
-        { headers: { Authorization: `Bearer ${token}` }, responseType: "blob" }
+        { headers: { Authorization: `Bearer ${token}` }, responseType: "blob" },
       );
       return response;
     } catch (error) {
@@ -61,7 +73,7 @@ export default class UserService {
     try {
       const response = await axios.get(
         `${this.BASE_URL}/user/follow/${username}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       return response;
     } catch (error) {
@@ -73,7 +85,7 @@ export default class UserService {
     try {
       const response = await axios.get(
         `${this.BASE_URL}/user/unfollow/${username}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       return response;
     } catch (error) {
@@ -87,7 +99,7 @@ export default class UserService {
         `${UserService.BASE_URL}/user/followed/${username}`,
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
       return response;
     } catch (error) {
