@@ -26,6 +26,7 @@ export default function UserPage() {
         fetchProfileLikes(),
       ]);
       setProfile(profileData);
+      console.log(profileData);
       configurePosts(postData.postList, likeData.postList);
     } catch (e) {
       throw e;

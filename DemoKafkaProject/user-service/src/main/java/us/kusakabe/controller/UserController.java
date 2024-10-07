@@ -25,9 +25,14 @@ public class UserController {
         this.imageService = imageService;
     }
 
+    @GetMapping("/profile")
+    public ResponseEntity<UserProfile> getMyProfile(@RequestHeader("Authorization") String header) {
+        return ResponseEntity.ok(userService.getMyProfile(header));
+    }
+
     @GetMapping("/{username}")
-    public ResponseEntity<UserProfile> getMyProfile(@PathVariable String username) {
-        return ResponseEntity.ok(userService.getUserProfile(username));
+    public ResponseEntity<UserProfile> getUserProfile(@PathVariable String username, @RequestHeader("Authorization") String header) {
+        return ResponseEntity.ok(userService.getUserProfile(username, header));
     }
 
     @PostMapping("/image")

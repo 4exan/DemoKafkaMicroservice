@@ -1,8 +1,11 @@
 package ua.kusakabe.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import ua.kusakabe.dto.AuthRR;
 import ua.kusakabe.dto.ProfileDto;
 import ua.kusakabe.entity.User;
@@ -17,12 +20,15 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final RestTemplate restTemplate;
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, RestTemplate restTemplate) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.restTemplate = restTemplate;
     }
 
     public AuthRR saveUser(AuthRR req) {
@@ -92,6 +98,12 @@ public class UserService {
     public ProfileDto getMyProfile(String username){
         ProfileDto res = new ProfileDto();
         try{
+            String resBody = restTemplate.getForObject("http://localhost:8765/user/image/" + username, String.class);
+            if(resBody != null) {
+                LOGGER.info("Response body: " + resBody);
+            } else {
+                LOGGER.info("Response body is null");
+            }
             Optional<User> user = userRepository.findByUsername(username);
             if(user.isPresent()){
                 res.setUsername(user.get().getUsername());

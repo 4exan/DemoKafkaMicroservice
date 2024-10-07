@@ -15,6 +15,7 @@ import us.kusakabe.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -24,30 +25,58 @@ public class UserService {
     private final JwtService jwtService;
     private final static Logger LOGGER = LoggerFactory.getLogger(UserService.class);
     private final FollowRepository followRepository;
+    private final ImageService imageService;
 
     @Autowired
-    public UserService(UserRepository userRepository, ProfilePictureRepository profilePictureRepository, JwtService jwtService, FollowRepository followRepository) {
+    public UserService(UserRepository userRepository, ProfilePictureRepository profilePictureRepository, JwtService jwtService, FollowRepository followRepository, ImageService imageService) {
         this.userRepository = userRepository;
         this.profilePictureRepository = profilePictureRepository;
         this.jwtService = jwtService;
         this.followRepository = followRepository;
+        this.imageService = imageService;
     }
 
-    public UserProfile getUserProfile(String username) {
+    public UserProfile getMyProfile(String header) {
         UserProfile userProfile = new UserProfile();
+        String username = jwtService.extractUsername(header.substring(7));
         try{
-            User user = userRepository.findByUsername(username);
-            ProfilePicture img = profilePictureRepository.findByUsername(username).orElse(null);
-            userProfile.setUsername(user.getUsername());
-            userProfile.setFirstName(user.getFirstName());
-            userProfile.setLastName(user.getLastName());
-            userProfile.setEmail(user.getEmail());
-            userProfile.setPhone(user.getPhone());
-            userProfile.setProfilePicture(img);
-            if(!userProfile.getUsername().isBlank()){
-                return userProfile;
+            Optional<User> user = userRepository.findByUsername(username);
+            if(user.isPresent()) {
+                byte[] img = imageService.downloadImage(username);
+                userProfile.setUsername(user.get().getUsername());
+                userProfile.setFirstName(user.get().getFirstName());
+                userProfile.setLastName(user.get().getLastName());
+                userProfile.setEmail(user.get().getEmail());
+                userProfile.setPhone(user.get().getPhone());
+                userProfile.setProfilePictureBytes(img);
+                LOGGER.info("User: {} loaded successfully!", username);
             } else {
-                LOGGER.warn("Username is blank!");
+                LOGGER.warn("User: {} not found!", username);
+            }
+        } catch (Exception e){
+            LOGGER.error("Error while getting user profile -> ", e);
+        }
+        return userProfile;
+    }
+
+    public UserProfile getUserProfile(String username, String header) {
+        UserProfile userProfile = new UserProfile();
+        String follower = jwtService.extractUsername(header.substring(7));
+        try{
+            Optional<User> user = userRepository.findByUsername(username);
+            Optional<Follow> follow = followRepository.findByFollowerAndFollowed(follower, username);
+            if(user.isPresent()) {
+                byte[] img = imageService.downloadImage(username);
+                userProfile.setUsername(user.get().getUsername());
+                userProfile.setFirstName(user.get().getFirstName());
+                userProfile.setLastName(user.get().getLastName());
+                userProfile.setEmail(user.get().getEmail());
+                userProfile.setPhone(user.get().getPhone());
+                userProfile.setProfilePictureBytes(img);
+                userProfile.setFollowed(follow.isPresent());
+                LOGGER.info("User: {} loaded successfully!", username);
+            } else {
+                LOGGER.warn("User: {} not found!", username);
             }
         } catch (Exception e){
             LOGGER.error("Error while getting user profile -> ", e);

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import AuthService from "../service/AuthService";
 import PostService from "../service/PostService";
+import UserService from "../service/UserService";
 import Post from "../common/Post";
 import PostModal from "../common/PostModal";
 import ProfileSection from "../common/Sections/ProfileSection";
@@ -38,6 +39,7 @@ export default function Profile() {
         fetchProfileLikes(),
       ]);
       setProfile(profileData);
+      console.log(profileData);
       configurePosts(postData.postList, likeData.postList);
     } catch (error) {
       throw error;
@@ -70,7 +72,7 @@ export default function Profile() {
   const fetchUserProfile = () => {
     try {
       const token = localStorage.getItem("token");
-      const response = AuthService.getMyProfile(token);
+      const response = UserService.getMyProfile(token);
       return response;
     } catch (error) {
       throw error;
