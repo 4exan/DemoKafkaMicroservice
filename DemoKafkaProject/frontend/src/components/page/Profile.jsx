@@ -2,14 +2,17 @@ import { useState } from "react";
 import { useEffect } from "react";
 import AuthService from "../service/AuthService";
 import PostService from "../service/PostService";
+import UserService from "../service/UserService";
 import Post from "../common/Post";
 import PostModal from "../common/PostModal";
 import ProfileSection from "../common/Sections/ProfileSection";
 import EditProfilePictureModal from "../common/EditProfilePictureModal";
+import EditProfileInfo from "../common/EditProfileInfo";
 
 export default function Profile() {
   const [profile, setProfile] = useState({});
   const [isOpen, setIsOpen] = useState(false);
+  const [editIsOpen, setEditIsOpen] = useState(false);
   const [doFetchPost, setDoFetchPost] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isFiltered, setIsFiltered] = useState(true);
@@ -28,6 +31,10 @@ export default function Profile() {
     setIsOpen(false);
   }
 
+  function toggleEdit() {
+    setEditIsOpen(() => !editIsOpen);
+  }
+
   //Fetch all data in one method
   const fetchData = async () => {
     setLoading(true);
@@ -37,8 +44,8 @@ export default function Profile() {
         fetchUserPosts(),
         fetchProfileLikes(),
       ]);
-      console.log(profileData);
       setProfile(profileData);
+      console.log(profileData);
       configurePosts(postData.postList, likeData.postList);
     } catch (error) {
       throw error;
@@ -48,20 +55,30 @@ export default function Profile() {
   };
 
   const configurePosts = (postsR, likesR) => {
-    const extendedPosts = postsR.map((post) => {
-      const likeInfo = likesR.find((like) => like.id === post.id);
-      return {
-        ...post,
-        isLiked: likeInfo ? true : false,
-      };
-    });
-    setFullInfo(extendedPosts.sort((a, b) => b.id - a.id));
+    if (likesR) {
+      const extendedPosts = postsR.map((post) => {
+        const likeInfo = likesR.find((like) => like.id === post.id);
+        return {
+          ...post,
+          isLiked: likeInfo ? true : false,
+        };
+      });
+      setFullInfo(extendedPosts.sort((a, b) => b.id - a.id));
+    } else {
+      const extendedPosts = postsR.map((post) => {
+        return {
+          ...post,
+          isLiked: false,
+        };
+      });
+      setFullInfo(extendedPosts.sort((a, b) => b.id - a.id));
+    }
   };
 
   const fetchUserProfile = () => {
     try {
       const token = localStorage.getItem("token");
-      const response = AuthService.getMyProfile(token);
+      const response = UserService.getMyProfile(token);
       return response;
     } catch (error) {
       throw error;
@@ -91,7 +108,7 @@ export default function Profile() {
   const handleRemovePost = async (id) => {
     try {
       const confirmDelete = window.confirm(
-        "Are you sure you want to delete this post?"
+        "Are you sure you want to delete this post?",
       );
       const token = localStorage.getItem("token");
       if (confirmDelete) {
@@ -142,7 +159,12 @@ export default function Profile() {
       <>
         <div className="flex h-screen">
           {/* LEFT PANEL - PROFILE*/}
-          <ProfileSection profile={profile} isOwner={true} />
+          <ProfileSection
+            token={localStorage.getItem("token")}
+            profile={profile}
+            isOwner={true}
+            openEdit={toggleEdit}
+          />
           {/* CENTRAL PANEL - POSTS*/}
           <div className="w-2/5 flex items-start justify-center border-x-2 border-gray-300 shadow-black shadow-2xl bg-gray-300">
             <div>
@@ -192,8 +214,19 @@ export default function Profile() {
             <div hidden={!isOpen}>
               <PostModal setIsOpen={setIsOpen} />
             </div>
-            <div>
-              <EditProfilePictureModal setIsOpen={true} />
+            <div
+              className={editIsOpen ? `border-l-2 border-black p-4` : `hidden`}
+            >
+              <h1 className="font-semibold text-xl text-center">
+                Profile picture:
+              </h1>
+              <EditProfilePictureModal
+                isOpen={editIsOpen}
+                setIsOpen={toggleEdit}
+              />
+              <div className="border-t-2 border-black"></div>
+              <h1>Profile information:</h1>
+              <EditProfileInfo profile={profile} />
             </div>
           </div>
         </div>

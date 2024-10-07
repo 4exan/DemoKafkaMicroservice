@@ -17,7 +17,6 @@ export default function RegistrationPage() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    console.log(formData);
   };
 
   const handleSubmit = async (e) => {
@@ -29,14 +28,14 @@ export default function RegistrationPage() {
       setFormData({
         username: "",
         password: "",
-        firstname: "",
-        lastname: "",
+        firstName: "",
+        lastName: "",
         email: "",
         phone: "",
         role: "USER",
       });
       alert("User registered successfully!");
-      navigate("/user/profile");
+      navigate("/auth/login");
     } catch (error) {
       console.log("Registration error: ", error);
       alert("Registration failed!");
@@ -45,7 +44,7 @@ export default function RegistrationPage() {
 
   return (
     <div>
-      <form className="form p-4">
+      <form className="form p-4" onSubmit={handleSubmit}>
         <h1 className="font-semibold text-center font-montserrat text-xl">
           Registration
         </h1>
@@ -54,6 +53,9 @@ export default function RegistrationPage() {
           <input
             type="text"
             className="relative -right-4 border-2 rounded-lg m-2 text-center border-gray-300 transition-all hover:border-black"
+            name="username"
+            value={formData.username}
+            onChange={handleInputChange}
           ></input>
         </div>
         <div className="px-2">
@@ -61,6 +63,9 @@ export default function RegistrationPage() {
           <input
             type="password"
             className="relative -right-6 border-2 rounded-lg m-2 text-center border-gray-300 transition-all hover:border-black"
+            name="password"
+            value={formData.password}
+            onChange={handleInputChange}
           ></input>
         </div>
         <div className="px-2">
@@ -68,6 +73,9 @@ export default function RegistrationPage() {
           <input
             type="text"
             className="relative -right-5 border-2 rounded-lg m-2 text-center border-gray-300 transition-all hover:border-black"
+            name="firstName"
+            value={formData.firstName}
+            onChange={handleInputChange}
           ></input>
         </div>
         <div className="px-2">
@@ -75,6 +83,9 @@ export default function RegistrationPage() {
           <input
             type="text"
             className="relative -right-6 border-2 rounded-lg m-2 text-center border-gray-300 transition-all hover:border-black"
+            name="lastName"
+            value={formData.lastName}
+            onChange={handleInputChange}
           ></input>
         </div>
         <div className="px-2">
@@ -82,6 +93,9 @@ export default function RegistrationPage() {
           <input
             type="text"
             className="relative -right-14 border-2 rounded-lg m-2 text-center border-gray-300 transition-all hover:border-black"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
           ></input>
         </div>
         <div className="px-2">
@@ -89,6 +103,9 @@ export default function RegistrationPage() {
           <input
             type="text"
             className="relative -right-12 border-2 rounded-lg m-2 text-left border-gray-300 transition-all hover:border-black"
+            name="phone"
+            value={formData.phone}
+            onChange={handleInputChange}
           ></input>
         </div>
         <div className="text-center">

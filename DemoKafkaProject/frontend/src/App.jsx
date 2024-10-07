@@ -10,6 +10,7 @@ import Profile from "./components/page/Profile";
 import Test from "./components/page/test";
 import UserPage from "./components/page/UserPage";
 import LikedPosts from "./components/page/LikedPosts";
+import FeedPage from "./components/page/FeedPage";
 
 export default function App() {
   const { isAuthenticated, isAdmin } = useAuth();
@@ -30,6 +31,7 @@ export default function App() {
                 <Route path="/user/search/:username" element={<UserPage />} />
                 <Route path="/test/test" element={<Test />} />
                 <Route path="/post/liked" element={<LikedPosts />} />
+                <Route path="/post/feed" element={<FeedPage />} />
               </>
             )}
             {/* Check if user is authenticated and admin before rendering admin-only routes */}

@@ -14,6 +14,10 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
+      const formData = {
+        username:username,
+        password:password,
+      }
       const userData = await AuthService.login(username, password);
       if (userData.token) {
         localStorage.setItem("token", userData.token);

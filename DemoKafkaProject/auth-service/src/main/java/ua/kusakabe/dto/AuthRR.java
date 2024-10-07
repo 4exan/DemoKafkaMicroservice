@@ -1,9 +1,13 @@
 package ua.kusakabe.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.RequiredArgsConstructor;
 import ua.kusakabe.entity.User;
 
 @RequiredArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AuthRR {
 
     private int statusCode;
