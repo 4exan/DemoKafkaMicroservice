@@ -7,10 +7,8 @@ import org.springframework.stereotype.Service;
 import us.kusakabe.dto.FollowRR;
 import us.kusakabe.dto.UserProfile;
 import us.kusakabe.entity.Follow;
-import us.kusakabe.entity.ProfilePicture;
 import us.kusakabe.entity.User;
 import us.kusakabe.repository.FollowRepository;
-import us.kusakabe.repository.ProfilePictureRepository;
 import us.kusakabe.repository.UserRepository;
 
 import java.util.ArrayList;
@@ -21,76 +19,76 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final ProfilePictureRepository profilePictureRepository;
     private final JwtService jwtService;
     private final static Logger LOGGER = LoggerFactory.getLogger(UserService.class);
     private final FollowRepository followRepository;
     private final ImageService imageService;
 
     @Autowired
-    public UserService(UserRepository userRepository, ProfilePictureRepository profilePictureRepository, JwtService jwtService, FollowRepository followRepository, ImageService imageService) {
+    public UserService(UserRepository userRepository, JwtService jwtService, FollowRepository followRepository, ImageService imageService) {
         this.userRepository = userRepository;
-        this.profilePictureRepository = profilePictureRepository;
         this.jwtService = jwtService;
         this.followRepository = followRepository;
         this.imageService = imageService;
     }
 
     public UserProfile getMyProfile(String header) {
-        UserProfile userProfile = new UserProfile();
         String username = jwtService.extractUsername(header.substring(7));
         try{
             Optional<User> user = userRepository.findByUsername(username);
             if(user.isPresent()) {
                 byte[] img = imageService.downloadImage(username);
-                userProfile.setUsername(user.get().getUsername());
-                userProfile.setFirstName(user.get().getFirstName());
-                userProfile.setLastName(user.get().getLastName());
-                userProfile.setEmail(user.get().getEmail());
-                userProfile.setPhone(user.get().getPhone());
-                userProfile.setProfilePictureBytes(img);
+                 UserProfile userProfile = new UserProfile.UserProfileBuilder(
+                        user.get().getUsername(),
+                        user.get().getFirstName(),
+                        user.get().getLastName(),
+                        user.get().getEmail(),
+                        user.get().getPhone()
+                ).profilePictureBytes(img).build();
                 LOGGER.info("User: {} loaded successfully!", username);
+                return userProfile;
             } else {
                 LOGGER.warn("User: {} not found!", username);
+                throw new RuntimeException("User not found!");
             }
         } catch (Exception e){
             LOGGER.error("Error while getting user profile -> ", e);
         }
-        return userProfile;
+        throw new RuntimeException("User not found!");
     }
 
     public UserProfile getUserProfile(String username, String header) {
-        UserProfile userProfile = new UserProfile();
         String follower = jwtService.extractUsername(header.substring(7));
         try{
             Optional<User> user = userRepository.findByUsername(username);
             Optional<Follow> follow = followRepository.findByFollowerAndFollowed(follower, username);
             if(user.isPresent()) {
                 byte[] img = imageService.downloadImage(username);
-                userProfile.setUsername(user.get().getUsername());
-                userProfile.setFirstName(user.get().getFirstName());
-                userProfile.setLastName(user.get().getLastName());
-                userProfile.setEmail(user.get().getEmail());
-                userProfile.setPhone(user.get().getPhone());
-                userProfile.setProfilePictureBytes(img);
-                userProfile.setFollowed(follow.isPresent());
+                UserProfile userProfile = new UserProfile.UserProfileBuilder(
+                        user.get().getUsername(),
+                        user.get().getFirstName(),
+                        user.get().getLastName(),
+                        user.get().getEmail(),
+                        user.get().getPhone())
+                        .profilePictureBytes(img)
+                        .isFollowed(follow.isPresent())
+                        .build();
                 LOGGER.info("User: {} loaded successfully!", username);
+                return userProfile;
             } else {
                 LOGGER.warn("User: {} not found!", username);
             }
         } catch (Exception e){
             LOGGER.error("Error while getting user profile -> ", e);
         }
-        return userProfile;
+        throw new RuntimeException("User not found!");
     }
 
-    public void followUser(String username, String header) {
+    public void followUser(String followed, String header) {
         try{
             String follower = jwtService.extractUsername(header.substring(7));
             if(!follower.isBlank()){
-                Follow follow = new Follow();
-                follow.setFollower(follower);
-                follow.setFollowed(username);
+                Follow follow = new Follow(follower, followed);
                 followRepository.save(follow);
                 LOGGER.info("Followed user : {}", follower);
             } else {
@@ -118,9 +116,7 @@ public class UserService {
     public boolean isUserFollowed(String header, String username) {
         try{
             String follower = jwtService.extractUsername(header.substring(7));
-            if(followRepository.findByFollowerAndFollowed(follower, username).isPresent()){
-                return true;
-            }
+            return followRepository.findByFollowerAndFollowed(follower, username).isPresent();
         } catch (Exception e){
             LOGGER.error("Error while checking user follow has occurred -> ", e);
         }
@@ -162,7 +158,6 @@ public class UserService {
                     followerList.add(follower.getFollower());
                 }
                 res.setFollowedList(followerList);
-//                res.setFollowers(dbList);
             } else {
                 res.setStatusCode(404);
                 res.setMessage("User follow list is empty!");
