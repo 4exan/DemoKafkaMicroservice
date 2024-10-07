@@ -7,10 +7,12 @@ import Post from "../common/Post";
 import PostModal from "../common/PostModal";
 import ProfileSection from "../common/Sections/ProfileSection";
 import EditProfilePictureModal from "../common/EditProfilePictureModal";
+import EditProfileInfo from "../common/EditProfileInfo"
 
 export default function Profile() {
   const [profile, setProfile] = useState({});
   const [isOpen, setIsOpen] = useState(false);
+  const [editIsOpen, setEditIsOpen] = useState(false);
   const [doFetchPost, setDoFetchPost] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isFiltered, setIsFiltered] = useState(true);
@@ -27,6 +29,10 @@ export default function Profile() {
 
   function closeModal() {
     setIsOpen(false);
+  }
+
+  function toggleEdit(){
+    setEditIsOpen(()=>!editIsOpen);
   }
 
   //Fetch all data in one method
@@ -157,6 +163,7 @@ export default function Profile() {
             token={localStorage.getItem("token")}
             profile={profile}
             isOwner={true}
+            openEdit={toggleEdit}
           />
           {/* CENTRAL PANEL - POSTS*/}
           <div className="w-2/5 flex items-start justify-center border-x-2 border-gray-300 shadow-black shadow-2xl bg-gray-300">
@@ -207,8 +214,12 @@ export default function Profile() {
             <div hidden={!isOpen}>
               <PostModal setIsOpen={setIsOpen} />
             </div>
-            <div>
-              <EditProfilePictureModal setIsOpen={true} />
+            <div className={editIsOpen ? `border-l-2 border-black p-4` : `hidden`}>
+              <h1 className="font-semibold text-xl text-center">Profile picture:</h1>
+              <EditProfilePictureModal isOpen={editIsOpen} setIsOpen={toggleEdit} />
+              <div className="border-t-2 border-black"></div>
+              <h1>Profile information:</h1>
+              <EditProfileInfo/>
             </div>
           </div>
         </div>

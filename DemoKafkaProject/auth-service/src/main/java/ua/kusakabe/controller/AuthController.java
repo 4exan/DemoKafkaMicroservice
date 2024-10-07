@@ -45,12 +45,12 @@ public class AuthController {
         return userService.validateToken(req);
     }
 
-    @GetMapping("/profile")
-    public ResponseEntity<ProfileDto> getProfile(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        ProfileDto profile = userService.getMyProfile(username);
-        return ResponseEntity.ok(profile);
-    }
+//    @GetMapping("/profile")
+//    public ResponseEntity<ProfileDto> getProfile(){
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String username = authentication.getName();
+//        ProfileDto profile = userService.getMyProfile(username);
+//        return ResponseEntity.ok(profile);
+//    }
 
 }

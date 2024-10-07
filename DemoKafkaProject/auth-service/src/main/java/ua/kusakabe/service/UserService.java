@@ -20,15 +20,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    private final RestTemplate restTemplate;
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, RestTemplate restTemplate) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
-        this.restTemplate = restTemplate;
     }
 
     public AuthRR saveUser(AuthRR req) {
@@ -95,29 +93,29 @@ public class UserService {
         return response;
     }
 
-    public ProfileDto getMyProfile(String username){
-        ProfileDto res = new ProfileDto();
-        try{
-            String resBody = restTemplate.getForObject("http://localhost:8765/user/image/" + username, String.class);
-            if(resBody != null) {
-                LOGGER.info("Response body: " + resBody);
-            } else {
-                LOGGER.info("Response body is null");
-            }
-            Optional<User> user = userRepository.findByUsername(username);
-            if(user.isPresent()){
-                res.setUsername(user.get().getUsername());
-                res.setFirstName(user.get().getFirstName());
-                res.setLastName(user.get().getLastName());
-                res.setEmail(user.get().getEmail());
-                res.setPhone(user.get().getPhone());
-            } else {
-                throw new RuntimeException("No such user");
-            }
-        }catch (Exception e){
-            throw new RuntimeException("Error while getting user profile");
-        }
-        return res;
-    }
+//    public ProfileDto getMyProfile(String username){
+//        ProfileDto res = new ProfileDto();
+//        try{
+//            String resBody = restTemplate.getForObject("http://localhost:8765/user/image/" + username, String.class);
+//            if(resBody != null) {
+//                LOGGER.info("Response body: " + resBody);
+//            } else {
+//                LOGGER.info("Response body is null");
+//            }
+//            Optional<User> user = userRepository.findByUsername(username);
+//            if(user.isPresent()){
+//                res.setUsername(user.get().getUsername());
+//                res.setFirstName(user.get().getFirstName());
+//                res.setLastName(user.get().getLastName());
+//                res.setEmail(user.get().getEmail());
+//                res.setPhone(user.get().getPhone());
+//            } else {
+//                throw new RuntimeException("No such user");
+//            }
+//        }catch (Exception e){
+//            throw new RuntimeException("Error while getting user profile");
+//        }
+//        return res;
+//    }
 
 }
