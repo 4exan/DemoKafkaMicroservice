@@ -104,14 +104,14 @@ public class UserService {
     }
 
     public void followUser(String followed, String header) {
+        String follower = jwtService.extractUsername(header.substring(7));
         try{
-            String follower = jwtService.extractUsername(header.substring(7));
-            if(!follower.isBlank()){
+            if(!follower.isBlank() && !follower.equals(followed)) {
                 Follow follow = new Follow(follower, followed);
                 followRepository.save(follow);
-                LOGGER.info("Followed user : {}", follower);
+                LOGGER.info("User {} followed user : {}", follower, followed);
             } else {
-                LOGGER.warn("Username is blank!");
+                LOGGER.warn("User '{}' caused error following user '{}' ", follower, followed);
             }
         } catch (Exception e){
             LOGGER.error("Error while following user -> ", e);
