@@ -28,6 +28,12 @@
         <module>post-consumer</module>
         <module>user-service</module>
         <module>post-service</module>
+        <module>like-producer</module>
+        <module>like-consumer</module>
+        <module>like-service</module>
+        <module>follow-producer</module>
+        <module>follow-consumer</module>
+        <module>follow-service</module>
     </modules>
     <scm>
         <connection/>

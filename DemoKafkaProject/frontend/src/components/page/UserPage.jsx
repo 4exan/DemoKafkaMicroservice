@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import UserService from "../service/UserService";
 import PostService from "../service/PostService";
+import LikeService from "../service/LikeService";
+import FollowService from "../service/FollowService";
 import Post from "../common/Post";
 import ProfileSection from "../common/Sections/ProfileSection";
+import { useNavigate } from "react-router-dom";
 
 export default function UserPage() {
   const { state } = useLocation();
@@ -12,10 +15,27 @@ export default function UserPage() {
   const [fullInfo, setFullInfo] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isFiltered, setIsFiltered] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    preLoad();
     fetchData();
   }, [state.username]);
+
+  const preLoad = () => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const response = UserService.getUserProfile(token, state.username);
+      if (response.status == 500) {
+        navigate("/error");
+      }
+    } catch (e) {
+      throw e;
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const fetchData = async () => {
     setLoading(true);
@@ -29,7 +49,10 @@ export default function UserPage() {
       console.log(profileData);
       configurePosts(postData.postList, likeData.postList);
     } catch (e) {
-      throw e;
+      if (e.code == "ERR_BAD_RESPONSE") {
+        navigate("/error");
+      }
+      throw e.code;
     } finally {
       setLoading(false);
     }
@@ -79,7 +102,7 @@ export default function UserPage() {
   const fetchProfileLikes = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = PostService.getUserLikes(token);
+      const response = LikeService.getUserLikes(token);
       return response;
     } catch (error) {
       throw error;
@@ -89,7 +112,7 @@ export default function UserPage() {
   const handleLikeButton = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      const response = PostService.likePost(token, id);
+      const response = LikeService.likePost(token, id);
       console.log(token);
       console.log(`Liked post with id: ${id}`);
     } catch (error) {
@@ -100,7 +123,7 @@ export default function UserPage() {
   const handleDislikeButton = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      const response = PostService.dislikePost(token, id);
+      const response = LikeService.dislikePost(token, id);
       console.log(token);
       console.log(`Disiked post with id: ${id}`);
     } catch (error) {

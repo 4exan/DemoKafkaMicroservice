@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import PostService from "../service/PostService";
+import LikeService from "../service/LikeService";
 import Post from "../common/Post";
 import { Link } from "react-router-dom";
 
@@ -15,7 +15,7 @@ export default function LikedPosts() {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const likeData = await PostService.getUserLikes(token);
+      const likeData = await LikeService.getUserLikes(token);
       //   setPosts(likeData.postList);
       extendPosts(likeData.postList);
     } catch (error) {
@@ -38,7 +38,7 @@ export default function LikedPosts() {
   const handleLikeButton = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      const response = PostService.likePost(token, id);
+      const response = LikeService.likePost(token, id);
       console.log(token);
       console.log(`Liked post with id: ${id}`);
     } catch (error) {
@@ -49,7 +49,7 @@ export default function LikedPosts() {
   const handleDislikeButton = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      const response = PostService.dislikePost(token, id);
+      const response = LikeService.dislikePost(token, id);
       console.log(token);
       console.log(`Disiked post with id: ${id}`);
     } catch (error) {

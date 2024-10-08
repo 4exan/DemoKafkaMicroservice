@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import AuthService from "../service/AuthService";
 import PostService from "../service/PostService";
 import UserService from "../service/UserService";
+import LikeService from "../service/LikeService";
 import Post from "../common/Post";
 import PostModal from "../common/PostModal";
 import ProfileSection from "../common/Sections/ProfileSection";
@@ -98,7 +99,7 @@ export default function Profile() {
   const fetchProfileLikes = () => {
     try {
       const token = localStorage.getItem("token");
-      const response = PostService.getUserLikes(token);
+      const response = LikeService.getUserLikes(token);
       return response;
     } catch (error) {
       throw error;
@@ -123,7 +124,7 @@ export default function Profile() {
   const handleLikeButton = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      const response = PostService.likePost(token, id);
+      const response = LikeService.likePost(token, id);
       console.log(token);
       console.log(`Liked post with id: ${id}`);
     } catch (error) {
@@ -134,7 +135,7 @@ export default function Profile() {
   const handleDislikeButton = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      const response = PostService.dislikePost(token, id);
+      const response = LikeService.dislikePost(token, id);
       console.log(token);
       console.log(`Disiked post with id: ${id}`);
     } catch (error) {
