@@ -11,6 +11,7 @@ import Test from "./components/page/test";
 import UserPage from "./components/page/UserPage";
 import LikedPosts from "./components/page/LikedPosts";
 import FeedPage from "./components/page/FeedPage";
+import ErrorPage from "./components/page/ErrorPage";
 
 export default function App() {
   const { isAuthenticated, isAdmin } = useAuth();
@@ -36,7 +37,7 @@ export default function App() {
             )}
             {/* Check if user is authenticated and admin before rendering admin-only routes */}
             {isAdmin && <>{/* Routes for ADMIN roles*/}</>}
-            <Route path="*" element={<Navigate to="/login" />} />
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </div>
       </div>
