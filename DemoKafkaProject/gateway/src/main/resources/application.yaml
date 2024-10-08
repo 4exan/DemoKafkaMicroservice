@@ -94,6 +94,20 @@ spring:
             - Path=/post-create/**
           filters:
             - AuthFilter
+
+        - id: like-service
+          uri: lb://LIKE-SERVICE
+          predicates:
+            - Path=/like/**
+          filters:
+            - AuthFilter
+
+        - id: like-producer
+          uri: lb://LIKE-PRODUCER
+          predicates:
+            - Path=/like-create/**
+          filters:
+            - AuthFilter
       globalcors:
         cors-configurations:
                   '[/**]':
