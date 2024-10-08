@@ -20,22 +20,11 @@ export default class PostService {
         `${this.BASE_URL}/post/user/${username}`,
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
       return response.data;
     } catch (err) {
       throw err;
-    }
-  }
-
-  static async getUserLikes(token) {
-    try {
-      const response = await axios.get(`${this.BASE_URL}/post/like/get`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      return response.data;
-    } catch (error) {
-      throw error;
     }
   }
 
@@ -46,32 +35,7 @@ export default class PostService {
         formData,
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      return response.data;
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  static async likePost(token, postId) {
-    try {
-      const response = await axios.get(`${this.BASE_URL}/post/like/${postId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      return response.data;
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  static async dislikePost(token, postId) {
-    try {
-      const response = await axios.get(
-        `${this.BASE_URL}/post/dislike/${postId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
       return response.data;
     } catch (err) {

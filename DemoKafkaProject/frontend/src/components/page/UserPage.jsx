@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import UserService from "../service/UserService";
 import PostService from "../service/PostService";
+import LikeService from "../service/LikeService";
 import Post from "../common/Post";
 import ProfileSection from "../common/Sections/ProfileSection";
 
@@ -79,7 +80,7 @@ export default function UserPage() {
   const fetchProfileLikes = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = PostService.getUserLikes(token);
+      const response = LikeService.getUserLikes(token);
       return response;
     } catch (error) {
       throw error;
@@ -89,7 +90,7 @@ export default function UserPage() {
   const handleLikeButton = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      const response = PostService.likePost(token, id);
+      const response = LikeService.likePost(token, id);
       console.log(token);
       console.log(`Liked post with id: ${id}`);
     } catch (error) {
@@ -100,7 +101,7 @@ export default function UserPage() {
   const handleDislikeButton = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      const response = PostService.dislikePost(token, id);
+      const response = LikeService.dislikePost(token, id);
       console.log(token);
       console.log(`Disiked post with id: ${id}`);
     } catch (error) {
