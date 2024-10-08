@@ -108,6 +108,20 @@ spring:
             - Path=/like-create/**
           filters:
             - AuthFilter
+
+        - id: follow-service
+          uri: lb://FOLLOW-SERVICE
+          predicates:
+            - Path=/follow/**
+          filters:
+            - AuthFilter
+
+        - id: follow-producer
+          uri: lb://FOLLOW-PRODUCER
+          predicates:
+            - Path=/follow-create/**
+          filters:
+            - AuthFilter
       globalcors:
         cors-configurations:
                   '[/**]':
