@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
+import PostService from "../service/PostService";
 import LikeService from "../service/LikeService";
+import FollowService from "../service/FollowService";
 import Post from "../common/Post";
 import { Link } from "react-router-dom";
 
-export default function LikedPosts() {
+export default function FeedPage() {
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
-  const [isFiltered, setIsFiltered] = useState(true);
-
+  /*
+   * Get list of followed users ->
+   * Get posts of each user ->
+   * Filter all posts by id ->
+   * Show final post list on page.
+   */
   useEffect(() => {
     fetchData();
   }, []);
@@ -15,10 +21,11 @@ export default function LikedPosts() {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("token");
-      const likeData = await LikeService.getUserLikes(token);
-      //   setPosts(likeData.postList);
-      extendPosts(likeData.postList);
+      const [followData, likeData] = await Promise.all([
+        fetchFollowedPosts(),
+        fetchLikeData(),
+      ]);
+      configurePosts(followData, likeData);
     } catch (error) {
       throw error;
     } finally {
@@ -26,16 +33,54 @@ export default function LikedPosts() {
     }
   };
 
-  function extendPosts(postsR) {
-    const extendedPosts = postsR.map((post) => {
-      return {
-        ...post,
-        isLiked: true,
-      };
-    });
-    setPosts(extendedPosts);
-  }
+  const configurePosts = (postsR, likesR) => {
+    if (likesR.postList) {
+      const extendedPosts = postsR.data.postList.map((post) => {
+        const likeInfo = likesR.postList.find((like) => like.id === post.id);
+        return {
+          ...post,
+          isLiked: likeInfo ? true : false,
+        };
+      });
+      setPosts(extendedPosts.sort((a, b) => b.id - a.id));
+    } else {
+      const extendedPosts = postsR.data.postList.map((post) => {
+        return {
+          ...post,
+          isLiked: false,
+        };
+      });
+      setPosts(extendedPosts.sort((a, b) => b.id - a.id));
+    }
+  };
 
+  const fetchFollowedPosts = () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = FollowService.getFollowedPosts(token);
+      return response;
+    } catch (e) {
+      throw e;
+    }
+  };
+
+  const fetchLikeData = () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = LikeService.getUserLikes(token);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  /* const configurePosts = (followData) => {
+    const groupedPosts = followData.data.postList;
+
+    setPosts(groupedPosts.sort((a, b) => b.id - a.id));
+    console.log(followData);
+  };
+*/
   const handleLikeButton = async (id) => {
     try {
       const token = localStorage.getItem("token");
@@ -58,39 +103,18 @@ export default function LikedPosts() {
     }
   };
 
-  const filterPost = () => {
-    if (isFiltered) {
-      const filteredPosts = posts.sort((a, b) => a.id - b.id);
-      setPosts(filteredPosts);
-      setIsFiltered(!isFiltered);
-    } else {
-      const filteredPosts = posts.sort((a, b) => b.id - a.id);
-      setPosts(filteredPosts);
-      setIsFiltered(!isFiltered);
-    }
-  };
-
   if (!loading) {
     return (
       <div className="flex h-screen">
         {/* LEFT PANEL */}
         <div className="w-1/3 flex flex-col items-start justify-start p-4">
           <div>
-            <h1 className="text-3xl font-semibold">Liked posts!</h1>
+            <h1 className="text-3xl font-semibold">Post feed!</h1>
           </div>
         </div>
         {/* CENTRAL PANEL */}
         <div className="w-2/5 flex items-start justify-center border-x-2 border-gray-300 shadow-black shadow-2xl bg-gray-300">
           <div className="flex-grow overflow-y-scroll max-h-[calc(100vh-100px)] max-w-[calc(100vh-350px)] table-scroll scroll-smooth">
-            <div className="my-4 m-auto h-1/2 border-b border-x py-2 rounded-lg border-gray-400 shadow-lg bg-white">
-              <button
-                className="mx-2 text-m font-semibold transition-all hover:bg-black hover:text-white border-2 border-black px-3 rounded-full align-text-bottom"
-                onClick={filterPost}
-              >
-                Filter
-              </button>
-            </div>
-
             <table>
               <thead></thead>
               <tbody>
@@ -115,6 +139,8 @@ export default function LikedPosts() {
                         user={null}
                         postOwner={false}
                       />
+
+                      <div></div>
                     </td>
                   </tr>
                 ))}

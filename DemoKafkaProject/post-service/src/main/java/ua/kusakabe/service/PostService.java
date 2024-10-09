@@ -4,10 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ua.kusakabe.dto.FollowRR;
 import ua.kusakabe.dto.PostRR;
+import ua.kusakabe.dto.UserRR;
+import ua.kusakabe.dto.UserWithPost;
 import ua.kusakabe.entity.Post;
 import ua.kusakabe.repository.PostRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -85,6 +89,24 @@ public class PostService {
     public void removePost(long postId) {
         postRepository.deleteById(postId);
         LOGGER.info("Deleted post with id {}", postId);
+    }
+
+    public UserWithPost getPostsByFollowedList(FollowRR req) {
+        UserWithPost res = new UserWithPost();
+        List<UserRR> usersPosts = new ArrayList<>();
+        try{
+            for(String username : req.getFollowedList()){
+                List<Post> userPosts = postRepository.findAllByUsername(username);
+                UserRR user = new UserRR();
+                user.setUsername(username);
+                user.setPostList(userPosts);
+                usersPosts.add(user);
+            }
+            res.setUserWithPosts(usersPosts);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return res;
     }
 
 }

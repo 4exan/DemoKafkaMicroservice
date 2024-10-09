@@ -3,7 +3,9 @@ package ua.kusakabe.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ua.kusakabe.dto.FollowRR;
 import ua.kusakabe.dto.PostRR;
+import ua.kusakabe.dto.UserWithPost;
 import ua.kusakabe.service.PostService;
 
 @RestController
@@ -30,6 +32,11 @@ public class PostController {
     @DeleteMapping("/{id}")
     public void deletePost(@PathVariable long id){
         postService.removePost(id);
+    }
+
+    @PostMapping("/followed")
+    public ResponseEntity<UserWithPost> getFollowedUsersPosts(@RequestBody FollowRR req){
+        return ResponseEntity.ok(postService.getPostsByFollowedList(req));
     }
 
 }

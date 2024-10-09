@@ -4,6 +4,7 @@ import AuthService from "../service/AuthService";
 import PostService from "../service/PostService";
 import UserService from "../service/UserService";
 import LikeService from "../service/LikeService";
+import FollowService from "../service/FollowService";
 import Post from "../common/Post";
 import PostModal from "../common/PostModal";
 import ProfileSection from "../common/Sections/ProfileSection";
@@ -211,7 +212,7 @@ export default function Profile() {
             </div>
           </div>
           {/* RIGHT PANEL - OTHER*/}
-          <div className="w-1/3 flex items-center justify-center">
+          <div className="w-1/3 flex items-center justify-center bg-lyra-white">
             <div hidden={!isOpen}>
               <PostModal setIsOpen={setIsOpen} />
             </div>
