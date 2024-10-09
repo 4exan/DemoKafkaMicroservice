@@ -50,6 +50,41 @@ body {
   box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.75);
 }
 
+.modal-edit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 700px;
+  height: 550px;
+
+  background-color: rgb(253, 253, 253);
+  padding: 10px;
+
+  border-radius: 25px;
+
+  -webkit-box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 22px 0px rgba(0, 0, 0, 0.75);
+}
+
+.modal-edit h1 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.modal-edit button {
+  position: inherit;
+  left: 95%;
+  top: 2%;
+
+  border: 1px solid black;
+  border-radius: 25px;
+
+  padding: 2px 9px;
+}
+
 .modal h1 {
   font-size: 24px;
   font-weight: 700;
@@ -140,15 +175,24 @@ body {
   width: 45px;
   aspect-ratio: 0.75;
   --c: no-repeat linear-gradient(#000 0 0);
-  background: var(--c) 0% 50%, var(--c) 50% 50%, var(--c) 100% 50%;
+  background:
+    var(--c) 0% 50%,
+    var(--c) 50% 50%,
+    var(--c) 100% 50%;
   background-size: 20% 60%;
   animation: l9 1s infinite;
 }
 @keyframes l9 {
   33% {
-    background-position: 0% 0%, 50% 100%, 100% 0%;
+    background-position:
+      0% 0%,
+      50% 100%,
+      100% 0%;
   }
   66% {
-    background-position: 0% 100%, 50% 0%, 100% 100%;
+    background-position:
+      0% 100%,
+      50% 0%,
+      100% 100%;
   }
 }

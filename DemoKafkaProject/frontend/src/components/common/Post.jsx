@@ -37,7 +37,7 @@ export default function Post({
         </h1>
         <p className="break-words">{post.content}</p>
       </div>
-      <div className="border-x-2 border-gray-600 border-b-2 rounded-b-lg w-2/3 bg-gray-200">
+      <div className="border-x-2 border-gray-600 border-b-2 rounded-b-lg w-fit bg-gray-200">
         <button
           className={
             isLiked
@@ -56,8 +56,11 @@ export default function Post({
             Delete
           </button>
         ) : (
-          <br />
+          <></>
         )}
+        <button className="px-2 hover:bg-slate-700 hover:rounded-br-md hover:text-white transition-all">
+          Comments
+        </button>
       </div>
     </div>
   );

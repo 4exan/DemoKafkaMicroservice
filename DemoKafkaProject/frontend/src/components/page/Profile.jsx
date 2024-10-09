@@ -8,8 +8,7 @@ import FollowService from "../service/FollowService";
 import Post from "../common/Post";
 import PostModal from "../common/PostModal";
 import ProfileSection from "../common/Sections/ProfileSection";
-import EditProfilePictureModal from "../common/EditProfilePictureModal";
-import EditProfileInfo from "../common/EditProfileInfo";
+import EditProfileModal from "../common/EditProfileModal.jsx";
 
 export default function Profile() {
   const [profile, setProfile] = useState({});
@@ -212,26 +211,19 @@ export default function Profile() {
             </div>
           </div>
           {/* RIGHT PANEL - OTHER*/}
-          <div className="w-1/3 flex items-center justify-center bg-lyra-white">
-            <div hidden={!isOpen}>
-              <PostModal setIsOpen={setIsOpen} />
-            </div>
-            <div
-              className={editIsOpen ? `border-l-2 border-black p-4` : `hidden`}
-            >
-              <h1 className="font-semibold text-xl text-center">
-                Profile picture:
-              </h1>
-              <EditProfilePictureModal
-                isOpen={editIsOpen}
-                setIsOpen={toggleEdit}
-              />
-              <div className="border-t-2 border-black"></div>
-              <h1>Profile information:</h1>
-              <EditProfileInfo profile={profile} />
-            </div>
+          <div className="w-1/3 flex items-center justify-center bg-lyra-white"></div>
+          <div hidden={!isOpen}>
+            <PostModal setIsOpen={setIsOpen} />
+          </div>
+          <div>
+            <EditProfileModal
+              isOpen={editIsOpen}
+              setIsOpen={setEditIsOpen}
+              profile={profile}
+            />
           </div>
         </div>
+
         {/* ----------------- */}
       </>
     );
